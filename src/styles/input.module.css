@@ -1,0 +1,39 @@
+.labelStyle{
+    
+    /* color: rgb(33, 110, 189); */
+    color: rgb(2, 185, 155);
+}
+
+.inputStyle{
+    border-color: rgb(25, 135, 84);
+    /*border-color: rgb(255, 165, 0);*/
+    /* color:rgb(255, 165, 0); */
+    color:rgb(253, 253, 253);
+    background-color:  rgb(33, 37, 41);
+}
+.selectStyle{
+    border-color: rgb(25, 135, 84);
+    color:rgb(253, 253, 253);
+    background-color: rgb(33, 37, 41);
+}
+
+
+.inputStyle:focus{
+    
+    background-color: rgb(33, 37, 41);
+    /*color: orange;*/
+    color:rgb(241, 243, 245);
+    border-color: rgb(2, 185, 155);
+    box-shadow: 0 0 0 0.2rem rgba(4, 206, 172, 0.25);
+}
+.btnStyle{
+    border-color: rgba(4, 206, 172, 0.25);
+    background-color: rgb(2, 185, 155);
+    color: white;
+}
+
+.btnStyle:hover{
+   
+    background-color: rgb(2, 185, 155);
+    box-shadow: 0 0 0 0.3rem rgba(4, 206, 172, 0.25);
+}

@@ -1,0 +1,74 @@
+.inputStyle{
+   
+    border-bottom-color:  rgb(25, 135, 84);
+    border-width: 2px;
+    border-left-color:rgb(33, 37, 41);
+    border-right-color: rgb(33, 37, 41);
+    border-top-color:rgb(33, 37, 41);
+    outline: none;
+    box-shadow:none !important;
+    background-color: rgb(33, 37, 41);
+    color:rgb(253, 253, 253);
+      /*border:1px solid #ccc !important;*/
+
+}
+
+.inputStyle:focus{
+    outline: none;
+    box-shadow:none !important;
+    border-bottom-color:rgb(25, 135, 84);
+    border-width: 2px;
+    border-left-color:rgb(33, 37, 41);
+    border-right-color: rgb(33, 37, 41);
+    border-top-color:rgb(33, 37, 41);
+    background-color: rgb(33, 37, 41);
+    color:white;
+}
+.spanEstilo {
+    background-color: transparent;
+    border-bottom-color: rgb(33, 37, 41);
+    border-width: 2px;
+    border-left-color:rgb(33, 37, 41);
+    border-right-color: rgb(33, 37, 41);
+    border-top-color:rgb(33, 37, 41);
+}
+
+
+#username::placeholder {
+    color: rgb(2, 185, 155);
+    opacity: 1; /* Firefox */
+} 
+#pass::placeholder {
+    color: rgb(2, 185, 155);
+    opacity: 1; /* Firefox */
+} 
+#bt_entrar {
+    border-color: rgba(4, 206, 172, 0.25);
+    background-color: rgb(2, 185, 155);
+    color: white;
+}
+#bt_entrar:hover {
+    background-color: rgb(2, 185, 155);
+    box-shadow: 0 0 0 0.3rem rgba(4, 206, 172, 0.25);
+}
+
+
+.iconStyle{
+    color: rgb(255, 255, 255);
+}
+  
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+ /*  border: 1px solid green;*/
+  -webkit-text-fill-color: rgb(247, 248, 247); 
+  -webkit-box-shadow: 0 0 0px 1000px #000 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}

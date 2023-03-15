@@ -1,0 +1,32 @@
+.cardStyle{
+    /*background-color: rgb(23, 25, 35);*/
+    background-color: rgb(39, 44, 49);
+    border-color: white;
+}
+
+.fuenteStyle{
+    font-size: smaller;
+}
+.btnStyle{
+    border-color: red;
+    color: white;
+}
+
+.btnStyle:hover{
+    border-color: red;
+}
+.btnStyle:active{
+    border-color: red;
+}
+.btn:active{
+    border-color: red;
+}
+.estiloFuente{
+    font-size: smaller;
+    color: rgb(177, 169, 169);
+}
+
+.estiloFuen{
+    color: rgb(177, 169, 169);
+}
+
