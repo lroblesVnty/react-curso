@@ -18,6 +18,7 @@ import Loading from "./components/Loading";
 import Venta from "./pages/Venta";
 import DetalleVenta from "./pages/DetalleVenta";
 import Equipos from "./pages/Equipos";
+import Register from "./pages/Register";
 function App() {
 
     return (
@@ -72,6 +73,15 @@ function App() {
                     </ProtectedRoute>
                     
                 } />
+                <Route path="/register" element={
+                    <ProtectedRoute redirectTo="/">
+                        <Register 
+                             isAllowed={!!user && user.permissions.includes("analize")}
+                        />
+                    </ProtectedRoute>
+                    
+                } />
+                
                 <Route path="/viajes" element={
                     <Viajes/>                    
                 } />

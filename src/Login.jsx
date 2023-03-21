@@ -7,8 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLock, faSignInAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2'
 
+
 function Login() {
-  
     const location=useLocation()
     const { userActive,login,setUserActive} = useAuth();
    
@@ -35,12 +35,12 @@ function Login() {
                 window.localStorage.setItem("userId",resp.data.data.id)
                 setUserActive( window.localStorage.getItem("userActive"))
                 console.log({userActive});
-                /*if (location.state?.from) {// if location.state  null accede a la porpiedad FROM
-                    navigate(location.state.from);
+                //if (location.state?.from) {// if location.state  null accede a la porpiedad FROM
+                    //navigate(location.state.from);
                     
-                }else{
-                    navigate("/menu");
-                }*/
+                //}else{
+                 //   navigate("/menu");
+                //}*/
                 navigate("/menu");
                 console.info('login correcto')
             }else if (resp.response) {

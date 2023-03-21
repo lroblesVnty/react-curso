@@ -148,7 +148,7 @@ export const  iniciarSesion=async (data)=>{
 }
 
 export const  getUserProfile=async (token)=>{
-    try {
+    /*try {
         //axios.defaults.headers.common = {'Authorization': `bearer ${token}`}
         const response= await apiProductos.get('/user-profile',{ headers: {"Authorization" : `Bearer ${token}`} }) 
         return response
@@ -156,7 +156,9 @@ export const  getUserProfile=async (token)=>{
     } catch (error) {
         
         return error
-    }
+    }*/
+    const response= await apiProductos.get('/user-profile',{ headers: {"Authorization" : `Bearer ${token}`} }) 
+    return response
 }
 export const  saveVenta=async (data)=>{
     const response= await apiProductos.post('/ventas',data) 
@@ -170,8 +172,10 @@ export const  SaleDetail=async (id)=>{
     const response= await apiProductos.get('/ventas/'+id) 
     return response
 }
-
-
+export const  setRegister=async (data)=>{
+    const response= await apiProductos.post('/register',data) 
+    return response
+}
 
 
 export var showCargando=function () {//*funcion para crear el icono de cargando...

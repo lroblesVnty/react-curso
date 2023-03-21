@@ -22,26 +22,34 @@ export function AuthProvaider({ children }) {
         }
     }*/
     
-    /*useEffect(() => {
+    useEffect(() => {
         console.log('inicia le auth context')
        console.log({userActive})
         const getUserActive  = async () => {
-            const token=window.localStorage.getItem('userActive')
-            const resp=await getUserProfile(token);
-            console.log(resp)
-            if (resp.status==200) {
-                setUserActive(resp.data.data)
-                console.log('estado actualizado')
-            }else{
-                setUserActive(null)
-                console.log('userActive null');
+            try {
+                const token=window.localStorage.getItem('userActive')
+                const resp=await getUserProfile(token);
+                console.log(resp)
+                if (resp.status==200) {
+                    setUserActive(resp.data.data)
+                    console.log('estado actualizado')
+                }
+            } catch (error) {
+                console.log(error)
+                if (error.response.status==401) {
+                    window.localStorage.removeItem('userActive');
+                    const userLocalStorage=window.localStorage.getItem('userActive')
+                    setUserActive(userLocalStorage)
+                    console.log('User Active null')
+                }
             }
+            
         };
           return () => getUserActive();
       
         
         
-    }, []);*/
+    }, []);
     // window.localStorage.getItem('userActive')
    
     const login =(data)=>{
