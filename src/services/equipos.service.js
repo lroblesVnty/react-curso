@@ -18,3 +18,13 @@ export const  saveEquipo=async (data)=>{
     const response= await apiProductos.post('/equipo',data) 
     return response
 }
+
+export const  uploadFile=async (data)=>{
+    //apiProductos.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+    var config = {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        //responseType: 'blob'
+    };
+    const response= await apiProductos.post('/file/upload',data,config) 
+    return response
+}

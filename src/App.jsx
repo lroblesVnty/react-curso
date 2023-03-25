@@ -19,6 +19,7 @@ import Venta from "./pages/Venta";
 import DetalleVenta from "./pages/DetalleVenta";
 import Equipos from "./pages/Equipos";
 import Register from "./pages/Register";
+import Files from "./pages/Files";
 function App() {
 
     return (
@@ -76,7 +77,7 @@ function App() {
                 <Route path="/register" element={
                     <ProtectedRoute redirectTo="/">
                         <Register 
-                             isAllowed={!!user && user.permissions.includes("analize")}
+                             
                         />
                     </ProtectedRoute>
                     
@@ -99,6 +100,9 @@ function App() {
                 } />
                 <Route path="/equipos" element={
                     <Equipos/>                    
+                } />
+                <Route path="/file" element={
+                    <Files/>                    
                 } />
 
                  <Route path="*" element={<NotFoundPage/>} />
