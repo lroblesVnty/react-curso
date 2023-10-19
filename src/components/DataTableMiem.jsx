@@ -1,0 +1,168 @@
+import {DataGrid,GridToolbar,GridActionsCellItem} from '@mui/x-data-grid';
+import esESGrid from '../models/mui-Es';
+import { CustomFooter } from "../components/CustomFooter";
+import  { useState,useEffect } from "react";
+import CustomPagination from './CustomPagination';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil} from '@fortawesome/free-solid-svg-icons'
+import {useCallback} from 'react';
+
+const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit}) => {
+    const [pageSize, setPageSize] = useState(5);
+    //const [rowCount, setRowCount] = useState(0);
+    //const updatedState = [...loading ,  loading];
+
+   // setLoading(oldArray => [...oldArray,loading ]); 
+    //*mandar el setLoading desde miembros.jsx 
+    //const [loading, setLoading] = useState(false);
+   // const [rows, setRows] = useState([]);
+
+    const columns= [
+        { field: 'id', headerName: 'Id', flex: 1,maxWidth:50,headerClassName: 'theme-header'},
+        { field: 'nombre', headerName: 'Nombre Miembro',flex: 1,headerClassName: 'theme-header',
+        headerAlign: 'center',align:'center' },
+        { field: 'edad', headerName: 'Edad',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center'},
+        { field: 'tel', headerName: 'Teléfono',flex: 1,description:
+        'The identification used by the person with access to the online service.',headerClassName: 'theme-header',
+        headerAlign: 'center',align:'center'},
+        {   
+            maxWidth:50,
+            headerClassName: 'theme-header',
+            description:'Editar',
+            field: 'actions',
+            type: 'actions',
+            align:'right',
+            getActions: (params) => [
+                <GridActionsCellItem
+                    icon={<FontAwesomeIcon icon={faPencil} size="xs" style={{color: "#ff6600",}} />}
+                    label="Editar"
+                    onClick={edit(params.row)}
+                />,
+             
+            ],
+        },
+    ];
+
+    const edit = useCallback(
+        (row) => () => {
+            console.log(row)
+            setEditValues({...row});
+            setIsEdit(true)
+            //navigate("/editar/"+id);
+            //window.open('#/products/edit/'+id,'_blank')
+        },
+        [],
+    );
+
+   
+    return (
+        <div style={{ height: 420, width: "100%" }}>
+        <DataGrid
+            //autoHeight
+            //localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+            loading={loading}
+            localeText={esESGrid}
+            //*rowCount={rowCount}
+            sx={{
+            "& .theme-header": {
+                //backgroundColor: 'rgb(226, 227, 229)',
+                color: "#02b99b",
+            },
+            "& .MuiDataGrid-toolbarContainer": {
+                //: '#074682',
+                "& .MuiButton-text": {
+                //color: 'rgb(13, 13, 14)',
+                color: "black",
+                },
+                "& .MuiBadge-badge": {
+                //backgroundColor: '#074682',
+                backgroundColor: "white",
+                },
+                /*'& .MuiInput-input':{
+                                        color:'rgb(81,81,81)'
+                                    },*/
+                "& .MuiInputBase-root": {
+                //texto e icono
+                    //color: "rgb(210, 224, 223)",
+                    color:"black"
+                },
+                "& .MuiSvgIcon-root": {
+                //only icons
+                // color:'red'
+                },
+            },
+            border: 2,
+            borderColor: "#02b99b",
+            "& .MuiDataGrid-row:hover": {
+                color: "primary.main",
+                backgroundColor: "rgba(147, 203, 248, 0.11)",
+                cursor:'pointer'
+            },
+            ".MuiDataGrid-columnSeparator": {
+                //display: 'none',
+                color: "rgb(81,81,81)",
+            },
+            ".MuiDataGrid-row": {
+                color: "black",
+                //borderColor:'black'
+            },
+            ".MuiDataGrid-cell": {
+                borderBottomColor: "rgb(81,81,81)",
+            },
+            "& .MuiDataGrid-footerContainer": {
+                color: "black",
+                "& .MuiPaginationItem-text": {
+                    //color: "rgb(210, 224, 223)",
+                    color:'black'
+                },
+            },
+            "& .MuiDataGrid-cell--withRenderer": {
+                color: "red",
+                "& .MuiIconButton-root": {
+                //color: 'rgb(13, 13, 14)',
+                //color:'red'
+                color: "#02b99b",
+                },
+            },
+            "& .MuiIconButton-root": {
+                color: "black",
+            },
+            /*'.MuiDataGrid-columnHeaders':{
+                                    borderBottomColor:'red',
+    
+                                '.MuiDataGrid-footerContainer':{
+                                    borderTopColor:'red'
+                                }}*/
+            }}
+            rows={rows}
+            columns={columns}
+            pageSize={pageSize}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            rowsPerPageOptions={[5, 10, 20]}
+            getRowId={(row) => row.id}
+            disableColumnResize={false}
+            disableColumnMenu
+            disableColumnFilter
+            disableColumnSelector
+            disableDensitySelector
+            disableSelectionOnClick
+            components={{ Toolbar: GridToolbar, Pagination: CustomPagination, Footer: CustomFooter,}}
+            componentsProps={{
+                toolbar: {
+                    showQuickFilter: true,
+                    quickFilterProps: { debounceMs: 500 },
+                    csvOptions: { disableToolbarButton: true },
+                    //printOptions: { disableToolbarButton: true },
+                },
+                footer: { total: rowCount }
+            }}
+            experimentalFeatures={{ newEditingApi: true }}
+            onRowClick={(rowData) => verDetalle(rowData.row)}
+    
+    
+        />
+    </div>
+    )
+}
+
+export default DataTableMiem

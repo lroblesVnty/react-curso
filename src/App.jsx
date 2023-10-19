@@ -20,6 +20,7 @@ import DetalleVenta from "./pages/DetalleVenta";
 import Equipos from "./pages/Equipos";
 import Register from "./pages/Register";
 import Files from "./pages/Files";
+import Miembros from "./pages/Miembros";
 function App() {
 
     return (
@@ -105,6 +106,9 @@ function App() {
                     <Files/>                    
                 } />
 
+                <Route path="/miembros" element={
+                    <Miembros/>                    
+                } />
                  <Route path="*" element={<NotFoundPage/>} />
                 
             </Routes>

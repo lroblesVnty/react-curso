@@ -103,7 +103,7 @@ const Equipos = () => {
     return (
         <>
             <div className="container-fluid">
-                <div className="row mt-3 mb-2">
+                <div className="row mt-3 mb-2 justify-content-center">
                     <div className="col-lg-4">
                         <CardForm title="Venta" colSize="12">
                             <form onSubmit={handleSubmit(onSubmit)}>
