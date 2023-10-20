@@ -5,7 +5,7 @@ import  { useState,useEffect } from "react";
 import LoadingButton from '@mui/lab/LoadingButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
-import { addMember, getMembers } from "../services/miembors.service";
+import { addMember, getMembers, updateMember } from "../services/miembors.service";
 import Swal from 'sweetalert2'
 import { getResponseError } from "../models/errorUtils";
 import FieldError from "../components/FieldError";
@@ -17,7 +17,7 @@ const pages=['Consultar','Products','Blog']
 
 const Miembros = () => {
     const {
-        register,handleSubmit,formState: { errors,isSubmitted,isSubmitSuccessful},reset, clearErrors,setValue
+        register,handleSubmit,formState: { errors,isSubmitted,isSubmitSuccessful,isDirty},reset, clearErrors,setValue
     } = useForm();
     const [isLoading, setIsLoading] = useState(false)
     //const [msgError, setMsgError] = useState({data:[{nombre:"dsada"},{"nombre":"dsarwe"}]})
@@ -26,12 +26,16 @@ const Miembros = () => {
     const [loading, setLoading] = useState(false);
     const [rowCount, setRowCount] = useState(0);
     const [rows, setRows] = useState([]);
-    const [defValues, setDefValues] = useState([]);
+    const [defValues, setDefValues] = useState({nombre:'',edad:'',tel:''});
     const [isEdit, setIsEdit] = useState(false);
+    const [isSucces, setIsSucces] = useState(false);
     //TODO condicionar el metodo onsubmit para mandar a guardar si isediting es falso
 
     useEffect(() => {
-        reset({...defValues});
+        //reset({...defValues});
+        reset(defValues);
+        //console.log('cambio form')
+
     },[defValues]);//arreglo vacio para que no itere varias veces
     
     useEffect(() => {
@@ -41,7 +45,8 @@ const Miembros = () => {
        
     },[]);//arreglo vacio para que no itere varias veces
     useEffect(() => {
-        reset()
+        reset({nombre:'',edad:'',tel:''})
+        //console.log('cambio  success')
         getMiembros()
     }, [isSubmitSuccessful])
 
@@ -76,52 +81,93 @@ const Miembros = () => {
     }
 
     const onSubmit = async (data) =>{
-        console.log(data)
+        console.log({isDirty})
         setIsLoading(true)
-        try {
-            const resp= await addMember(data)
-            console.log(resp)
-            if (resp.status==201) {
-                
+        console.log(data)
+        if (isEdit) {
+            if (isDirty) {
+                console.log('editando')
+                try {
+                    const resp=await updateMember(data)
+                    console.log(resp)
+                    if (resp.status==200) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title:'Actualizado Correctamente',
+                            showConfirmButton: true,
+                            allowOutsideClick:false,
+                        });
+                        setMsgError(null)
+                        //setIsSucces(true)
+                        setDefValues({nombre:'',edad:'',tel:''})
+                        setIsEdit(false)
+                    }
+
+                } catch (error) {
+                    Swal.fire({
+                        position: 'top',
+                        icon: 'error',
+                        title:error.message,
+                        showConfirmButton: true,
+                        allowOutsideClick:false,
+                    });
+                    console.log(error)
+                    if (error.response.status==422) {
+                       setMsgError(getResponseError(error))
+                    }
+                }finally{
+                    setIsLoading(false)
+                }
+            }
+        }else{
+            try {
+                const resp= await addMember(data)
+                console.log(resp)
+                if (resp.status==201) {
+                    
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title:'Registro exitoso',
+                        showConfirmButton: true,
+                        allowOutsideClick:false,
+                    });
+                    setMsgError(null)
+                    //setIsSucces(true)
+                    setDefValues({nombre:'',edad:'',tel:''})
+                    setIsEdit(false)
+                }
+            } catch (error) {
                 Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title:'Registro exitoso',
+                    position: 'top',
+                    icon: 'error',
+                    title:error.message,
                     showConfirmButton: true,
                     allowOutsideClick:false,
                 });
-                setMsgError(null)
+                console.log(error)
+                console.log(error.response.data)
+               // setMsgErrors(error.response.data.errors)
+                if (error.response.status==422) {
+                   setMsgError(getResponseError(error))
+                    /*setMsgError({
+                        ...msgError, // Copy other fields
+                        ['data']: error.response.data.errors
+                    });*/
                 
-                
+                    /*setMsgError({
+                        ...msgError, // Copy other fields
+                        ['errors']: error.response.data.errors
+                    });*/
+                    //setMsgError(prevState => ({ ...prevState, data: [...prevState.data,error.response.data.errors]}));
+                    //setMsgError(oldArray => [...oldArray,error.response.data.errors ]);
+                }
+            }finally{
+                setIsLoading(false)
             }
-        } catch (error) {
-            Swal.fire({
-                position: 'top',
-                icon: 'error',
-                title:error.message,
-                showConfirmButton: true,
-                allowOutsideClick:false,
-            });
-            console.log(error)
-            console.log(error.response.data)
-           // setMsgErrors(error.response.data.errors)
-            if (error.response.status==422) {
-               setMsgError(getResponseError(error))
-              /*setMsgError({
-                ...msgError, // Copy other fields
-                ['data']: error.response.data.errors
-            });*/
-            
-/*setMsgError({
-                    ...msgError, // Copy other fields
-                    ['errors']: error.response.data.errors
-                });*/
-                //setMsgError(prevState => ({ ...prevState, data: [...prevState.data,error.response.data.errors]}));
-                //setMsgError(oldArray => [...oldArray,error.response.data.errors ]);
-            }
-        }finally{
-            setIsLoading(false)
         }
+       
 
     }
     return (
@@ -202,6 +248,7 @@ const Miembros = () => {
                             ,}}
                             type="submit"
                             loading={isLoading}
+                            disabled={!isDirty ? true : false}
                             loadingPosition="center"
                             endIcon={<FontAwesomeIcon icon={faUserPlus} size="2xs"  />}
                             variant="outlined"

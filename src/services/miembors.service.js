@@ -14,3 +14,8 @@ export const  getMembers=async ()=>{
     const response= await apiGym.get('/miembro') 
     return response
 }
+
+export const  updateMember=async (data)=>{
+    const response= await apiGym.put('/miembro/'+data.id,data) 
+    return response
+}
