@@ -222,6 +222,7 @@ const Miembros = () => {
                                         validate: value =>value.trim() !="" || "El teléfono no puede estar vacio",
                                         required: { value: true, message: "Ingresa el teléfono" },
                                         minLength: { value: 10, message: "El teléfono debe contener mínimo 10 caracteres" },
+                                        maxLength: { value: 12, message: "El teléfono debe contener máximo 12 caracteres" },
                                         //pattern:{value: /^[0-9]+$/,message:"Solo se apcetan números"},
                                     })}
                                 />

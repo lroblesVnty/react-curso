@@ -6,6 +6,7 @@ import CustomPagination from './CustomPagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil} from '@fortawesome/free-solid-svg-icons'
 import {useCallback} from 'react';
+import { RenderStatus } from './RenderStatus';
 
 const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit}) => {
     const [pageSize, setPageSize] = useState(5);
@@ -25,6 +26,9 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit}) => {
         { field: 'tel', headerName: 'Teléfono',flex: 1,description:
         'The identification used by the person with access to the online service.',headerClassName: 'theme-header',
         headerAlign: 'center',align:'center'},
+        { field: 'statusPlan', headerName: 'Estatus',flex: 1,description:
+        'Estatus del plan ',headerClassName: 'theme-header',
+        headerAlign: 'center',align:'center',renderCell: RenderStatus},
         {   
             maxWidth:50,
             headerClassName: 'theme-header',
@@ -157,7 +161,7 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit}) => {
                 footer: { total: rowCount }
             }}
             experimentalFeatures={{ newEditingApi: true }}
-            onRowClick={(rowData) => verDetalle(rowData.row)}
+           // onRowClick={(rowData) => verDetalle(rowData.row)}
     
     
         />

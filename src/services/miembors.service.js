@@ -11,11 +11,22 @@ export const  addMember=async (data)=>{
 }
 
 export const  getMembers=async ()=>{
-    const response= await apiGym.get('/miembro') 
+   // const response= await apiGym.get('/miembro') 
+    const response= await apiGym.get('/status/miembro') 
     return response
 }
 
 export const  updateMember=async (data)=>{
     const response= await apiGym.put('/miembro/'+data.id,data) 
+    return response
+}
+
+export const  getPlans=async ()=>{
+    const response= await apiGym.get('/membresia') 
+    return response
+}
+
+export const  addPlan=async (data)=>{
+    const response= await apiGym.post('/plan',data) 
     return response
 }

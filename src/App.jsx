@@ -21,6 +21,7 @@ import Equipos from "./pages/Equipos";
 import Register from "./pages/Register";
 import Files from "./pages/Files";
 import Miembros from "./pages/Miembros";
+import Planes from "./pages/Planes";
 function App() {
 
     return (
@@ -105,10 +106,13 @@ function App() {
                 <Route path="/file" element={
                     <Files/>                    
                 } />
-
                 <Route path="/miembros" element={
                     <Miembros/>                    
                 } />
+                <Route path="/plan" element={
+                    <Planes/>                    
+                } />
+
                  <Route path="*" element={<NotFoundPage/>} />
                 
             </Routes>
