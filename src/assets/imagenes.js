@@ -6,6 +6,7 @@ import ocupadoImg from './images/ocupado.png'
 import disponibleImg from './images/disponible.png'
 import seleccionImg from './images/seleccion.png'
 import volanteImg from './images/volante.png'
+import crashp from './images/crashp.png'
 const Imagenes={
     "logoComesa":logoComesa,
     "crashBash":crashBImg,
@@ -14,6 +15,7 @@ const Imagenes={
     "ocupado":ocupadoImg,
     "disponible":disponibleImg,
     "seleccion":seleccionImg,
-    "volante":volanteImg
+    "volante":volanteImg,
+    "crashp":crashp
 }
 export default Imagenes;
