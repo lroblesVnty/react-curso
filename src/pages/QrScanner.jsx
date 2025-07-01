@@ -1,18 +1,23 @@
 import { useState, useEffect } from 'react';
 import { Scanner, useDevices } from '@yudiel/react-qr-scanner';
+import { useNavigate } from 'react-router-dom';
 
 const QrScanner = () => {
     const [scannedResult, setScannedResult] = useState('');
     const [deviceId, setDeviceId] = useState(undefined);
     const [isScanningPaused, setIsScanningPaused] = useState(false);
     const devices = useDevices(); // Hook para obtener la lista de dispositivos de cámara
+    const navigate = useNavigate();
 
     const handleScan = (result) => {
         if (result) {
             console.log(result)
-        setScannedResult(result[0].rawValue);
-        console.log('Código QR escaneado:', result.rawValue);
+        //setScannedResult(result[0].rawValue);
+        console.log('Código QR escaneado:', result[0].rawValue);
+        const data=JSON.parse(result[0].rawValue)
+        console.log(data)
         setIsScanningPaused(true); // Pausar el escaneo después de un resultado
+        navigate('/miembro/status/'+data.id);
         }
     };
 

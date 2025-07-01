@@ -21,6 +21,11 @@ export const  updateMember=async (data)=>{
     return response
 }
 
+export const  miembroStatus=async (id)=>{
+    const response= await apiGym.get('/miembro/'+id+'/status') 
+    return response
+}
+
 export const  getPlans=async ()=>{
     const response= await apiGym.get('/membresia') 
     return response

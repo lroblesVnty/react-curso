@@ -24,6 +24,7 @@ import Miembros from "./pages/Miembros";
 import Planes from "./pages/Planes";
 import QrScanner from './pages/QrScanner'
 import Home from "./pages/Home";
+import MiembroStatus from "./pages/MiembroStatus";
 function App() {
 
     return (
@@ -119,6 +120,9 @@ function App() {
                 } />
                 <Route path="/home" element={
                     <Home/>                    
+                } />
+                <Route path="/miembro/status/:id" element={
+                    <MiembroStatus/>                    
                 } />
 
                  <Route path="*" element={<NotFoundPage/>} />
