@@ -23,7 +23,15 @@ const MiembroStatus = () => {
     }
 
     return (
-    <div>MiembroStatus {miembroId} status {status}</div>
+        <div>
+            <div>MiembroStatus {miembroId} status {status}</div>
+            <div>
+                {status=='plan activo' ? <h1>Estás conectado</h1> : <h1>Renueva tu plan</h1>}
+            </div>
+
+        </div>
+    
+    
     )
 }
 

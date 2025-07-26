@@ -34,25 +34,28 @@ const StatusProps= {
 }
 
 const Status = React.memo((StatusProps) => {
-  console.log(StatusProps)
+  //console.log(StatusProps)
   //const { status } = StatusProps;
   const status = StatusProps.status.value;
+  let label='';
  
   let icon= null;
   let clasStyle=null;
-  if (status === 'inactivo') {
+  if (!status) {
     icon = <ReportProblemIcon className="icon" />;
     clasStyle='Rejected'
+    label='Inactivo'
   } else if (status === 'Open') {
     icon = <InfoIcon className="icon" />;
   } else if (status === 'PartiallyFilled') {
     icon = <AutorenewIcon className="icon" />;
-  } else if (status === 'activo') {
+  } else if (status) {
     icon = <DoneIcon className="icon" />;
     clasStyle='Filled'
+    label='Activo'
   }
 
-  let label = status;
+  //let label = status;
   if (status === 'PartiallyFilled') {
     label = 'Partially Filled';
   }

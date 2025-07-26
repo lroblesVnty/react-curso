@@ -1,90 +1,42 @@
 import CardForm from "../components/CardForm";
-import NavBar from "../components/NavBar";
 import { useForm } from "react-hook-form";
-import  { useState,useEffect,useRef } from "react";
+import  { useState,useEffect } from "react";
 import LoadingButton from '@mui/lab/LoadingButton';
+import FieldError from "../components/FieldError";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
-import { addMember, getMembers, updateMember } from "../services/miembors.service";
+import Button from '@mui/material/Button';
+import { getPlansList } from "../services/gym.service";
+import { addMember } from "../services/miembors.service";
 import Swal from 'sweetalert2'
 import { getResponseError } from "../models/errorUtils";
-import FieldError from "../components/FieldError";
-import DataTableMiem from "../components/DataTableMiem";
-import Button from '@mui/material/Button';
-import ModalComponent from "../components/Modal";
-import AddMiembroForm from "../components/AddMiembroForm";
 
-
-
-const pages=['Consultar','Products','Blog']
-
-
-const Miembros = () => {
-    const {
-        register,handleSubmit,formState: { errors,isSubmitted,isSubmitSuccessful,isDirty},reset, clearErrors,setValue
+const AddMiembroForm = ({onUserAdded}) => {
+    const {register,handleSubmit,formState: { errors,isSubmitted,isSubmitSuccessful,isDirty},reset, clearErrors,setValue
     } = useForm();
     const [isLoading, setIsLoading] = useState(false)
-    //const [msgError, setMsgError] = useState({data:[{nombre:"dsada"},{"nombre":"dsarwe"}]})
-    //*const [msgError, setMsgError] = useState({data:[{nombre:['dsa','fds']}]})
-    const [msgError, setMsgError] = useState(null);
-    const [loading, setLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const [rowCount, setRowCount] = useState(0);
-    const [rows, setRows] = useState([]);
-    const [defValues, setDefValues] = useState({nombre:'',edad:'',tel:''});
+    const [msgError, setMsgError] = useState(null);
     const [isEdit, setIsEdit] = useState(false);
-    const [isSucces, setIsSucces] = useState(false);
-    //TODO condicionar el metodo onsubmit para mandar a guardar si isediting es falso
-      const openModalButtonRef = useRef(null);
+    const [plans, setPlans] = useState([]);
+     const [defValues, setDefValues] = useState({nombre:'',apellido:'',edad:'',tel:''});
 
-    useEffect(() => {
-        //reset({...defValues});
-        reset(defValues);
-        //console.log('cambio form')
-
-    },[defValues]);//arreglo vacio para que no itere varias veces
-    
-    useEffect(() => {
-        (async()=>{
-            getMiembros()
-        })();
-       
-    },[]);//arreglo vacio para que no itere varias veces
-    useEffect(() => {
-        reset({nombre:'',edad:'',tel:''})
-        //console.log('cambio  success')
-        getMiembros()
-    }, [isSubmitSuccessful])
-
-    const handleOpenModal = () => {
-        setModalOpen(true);
-    };
-    const handleCloseModal = () => {
+     const handleCloseModal = () => {
         setModalOpen(false);
     };
 
-     const handleUserAddedSuccessfully = () => {
-        console.log('Usuario agregado exitosamente, cerrando modal...');
-        handleCloseModal(); // Cierra el modal
-        // Opcional: Si quieres recargar la lista de miembros después de agregar uno
-        getMiembros(); // Llama a tu función para obtener los miembros actualizados
-    };
+     useEffect(() => { 
+        loadplans()
+       
+    },[]);//arreglo vacio para que no itere varias veces
 
-    const getMiembros=async ()=>{
-        setLoading(true)
+    const loadplans=async ()=>{
         try {
-            const resp= await getMembers()
-            console.log(resp)
-            setLoading(false)
-            if (resp.status==200) {
-                if (resp.data) {
-                    setRows(resp.data)
-                    setRowCount(resp.data.length)
-                    //console.log(resp.data.length)
-                }
+            const resp= await getPlansList()
+            if (resp.status==200 && resp.data) {
+                setPlans(resp.data)
             }
         } catch (error) {
-            
             Swal.fire({
                 position: 'top',
                 icon: 'error',
@@ -92,18 +44,15 @@ const Miembros = () => {
                 showConfirmButton: true,
                 allowOutsideClick:false,
             });
-            
-        }finally{
-            setLoading(false)
         }
-        
-        
     }
+
 
     const onSubmit = async (data) =>{
         console.log({isDirty})
         setIsLoading(true)
-        console.log(data)
+        data.plan_id=data.plan;
+        delete data.plan
         if (isEdit) {
             if (isDirty) {
                 console.log('editando')
@@ -111,6 +60,9 @@ const Miembros = () => {
                     const resp=await updateMember(data)
                     console.log(resp)
                     if (resp.status==200) {
+                        if (onUserAdded) {
+                            onUserAdded();
+                        }
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
@@ -120,7 +72,7 @@ const Miembros = () => {
                         });
                         setMsgError(null)
                         //setIsSucces(true)
-                        setDefValues({nombre:'',edad:'',tel:''})
+                        setDefValues({nombre:'',apellido:'',edad:'',tel:''})
                         setIsEdit(false)
                     }
 
@@ -134,7 +86,7 @@ const Miembros = () => {
                     });
                     console.log(error)
                     if (error.response.status==422) {
-                       setMsgError(getResponseError(error))
+                        setMsgError(getResponseError(error))
                     }
                 }finally{
                     setIsLoading(false)
@@ -145,18 +97,23 @@ const Miembros = () => {
                 const resp= await addMember(data)
                 console.log(resp)
                 if (resp.status==201) {
+                    if (onUserAdded) {
+                            onUserAdded();
+                    }
                     
+                    // *** AQUI ES DONDE AGREGAS EL MENSAJE DE ÉXITO ***
                     Swal.fire({
-                        position: 'center',
                         icon: 'success',
-                        title:'Registro exitoso',
-                        showConfirmButton: true,
-                        allowOutsideClick:false,
+                        title: '¡Usuario agregado!',
+                        text: 'El nuevo usuario se ha registrado correctamente.',
+                        showConfirmButton: false,
+                        timer: 1500 // El mensaje se cerrará automáticamente después de 1.5 segundos
                     });
                     setMsgError(null)
                     //setIsSucces(true)
-                    setDefValues({nombre:'',edad:'',tel:''})
+                    setDefValues({nombre:'',apellido:'',edad:'',tel:''})
                     setIsEdit(false)
+                    reset()
                 }
             } catch (error) {
                 Swal.fire({
@@ -168,9 +125,9 @@ const Miembros = () => {
                 });
                 console.log(error)
                 console.log(error.response.data)
-               // setMsgErrors(error.response.data.errors)
+                // setMsgErrors(error.response.data.errors)
                 if (error.response.status==422) {
-                   setMsgError(getResponseError(error))
+                    setMsgError(getResponseError(error))
                     /*setMsgError({
                         ...msgError, // Copy other fields
                         ['data']: error.response.data.errors
@@ -187,16 +144,11 @@ const Miembros = () => {
                 setIsLoading(false)
             }
         }
-       
-
+           
+    
     }
     return (
-    <>
-       <NavBar pages={pages}/>
-       <div className="container mt-4">
-        <div className="row justify-content-center align-items-center">
-            <div className="col-lg-4 mb-3">
-                <CardForm title="Añadir Miembro" colSize="12">
+         <CardForm title="Añadir Miembro" colSize="12">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
                         <div className="col">
@@ -216,6 +168,25 @@ const Miembros = () => {
                                     {errors.nombre && errors.nombre.message}
                                 </div>
                                 <FieldError message={msgError?.nombre} />
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className="form-floating mb-3">
+                                <input type="text" className={"form-control "+(isSubmitted?errors.apellido?'is-invalid':'is-valid':'')} placeholder="name@example.com" 
+                                    {...register("apellido",{
+                                        validate: value =>value.trim() !="" || "El apellido no puede estar vacio",
+                                        required: { value: true, message: "Ingresa el apellido" },
+                                        //pattern:{value: /^[a-zA-ZÁ-ÿ\s]+$/,message:"Solo se apcetan letras"},
+                                        //minLength: { value: 3, message: "El nombre debe contener más de 3 caracteres" },
+                                        maxLength:{value:100,message:"Solo se aceptan maximo 100 caracteres "}
+                                    })}
+                                    
+                                />
+                                <label htmlFor="exampleFormControlInput1" className="form-label">Apellido</label>
+                                <div className="invalid-feedback">
+                                    {errors.apellido && errors.apellido.message}
+                                </div>
+                                <FieldError message={msgError?.apellido} />
                             </div>
                         </div>
                     </div>
@@ -254,17 +225,17 @@ const Miembros = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
+                     <div className="row">
                         <div className="col">
                             <div className="form-floating mb-3">
                                 <select className={"form-select "+(isSubmitted?errors.plan?'is-invalid':'is-valid':'')} aria-label="Floating label select example"
-                                {...register("proveedor",{
-                                        required:"Selecciona un proveedor"
+                                {...register("plan",{
+                                        required:"Selecciona un Plan"
                                     })} defaultValue=""
                                 >
                                     <option value="" disabled>Elige un plan</option>
-                                    {//providers&&providers.map((val)=><option value={val.id} key={val.id}>{val.nombre}</option>)
-                                    }
+                                    {plans&&plans.map((val)=><option value={val.id} key={val.id}>{val.nombre_plan}</option>)}
+                                    
                                 
                                 </select>
                                 <label htmlFor="floatingSelect">Plan</label>
@@ -298,27 +269,10 @@ const Miembros = () => {
                     </div>
                     
                 </form>
-                 <Button onClick={handleOpenModal} ref={openModalButtonRef}>Open modal</Button>
-                 <ModalComponent 
-                    open={modalOpen}
-                    handleClose={handleCloseModal}
-                >
-                    <AddMiembroForm onUserAdded={handleUserAddedSuccessfully}/>
-                        <button onClick={handleCloseModal}>Cancelar</button>
+                      
                     
-                </ModalComponent>
 
-                </CardForm>
-            </div>
-            <div className="col-lg-8">
-                <CardForm title="Miembros" colSize="12">
-                    <DataTableMiem rows={rows} loading={loading} rowCount={rowCount} setEditValues={setDefValues} setIsEdit={setIsEdit}/>
-                </CardForm>
-            </div>
-        </div>
-       </div>
-    </>
+        </CardForm>
   )
 }
-
-export default Miembros
+export default AddMiembroForm

@@ -26,7 +26,7 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit}) => {
         { field: 'tel', headerName: 'Teléfono',flex: 1,description:
         'The identification used by the person with access to the online service.',headerClassName: 'theme-header',
         headerAlign: 'center',align:'center'},
-        { field: 'statusPlan', headerName: 'Estatus',flex: 1,description:
+        { field: 'activo', headerName: 'Estatus',flex: 1,description:
         'Estatus del plan ',headerClassName: 'theme-header',
         headerAlign: 'center',align:'center',renderCell: RenderStatus},
         {   
