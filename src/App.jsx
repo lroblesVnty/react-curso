@@ -49,10 +49,11 @@ function App() {
                     </ProtectedRoute>
                     
                 } />
-                <Route path="/editar/:userId" element={
-                    <ProtectedRoute redirectTo="/">
+                 {/* <ProtectedRoute redirectTo="/">
                         <Editar/>
-                    </ProtectedRoute>
+                    </ProtectedRoute> */}
+                <Route path="/editar/:userId" element={
+                     <Editar/>                   
                     
                 } />
                 <Route path="/agregar" element={

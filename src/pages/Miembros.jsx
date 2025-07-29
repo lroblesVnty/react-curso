@@ -34,6 +34,7 @@ const Miembros = () => {
     const [defValues, setDefValues] = useState({nombre:'',edad:'',tel:''});
     const [isEdit, setIsEdit] = useState(false);
     const [isSucces, setIsSucces] = useState(false);
+    const [editingMiembro, setEditingMiembro] = useState(null);
     //TODO condicionar el metodo onsubmit para mandar a guardar si isediting es falso
       const openModalButtonRef = useRef(null);
 
@@ -57,13 +58,23 @@ const Miembros = () => {
     }, [isSubmitSuccessful])
 
     const handleOpenModal = () => {
+        setIsEdit(false);
         setModalOpen(true);
     };
     const handleCloseModal = () => {
         setModalOpen(false);
     };
 
-     const handleUserAddedSuccessfully = () => {
+    const handleEditMiembro = (miembro) => {
+        var plan=miembro.plan ? miembro.plan.id : null; // Aseguramos que plan sea un ID válido
+        delete miembro.plan; // Eliminamos la propiedad plan del objeto miembro
+        miembro.plan = plan; // Asignamos el ID del plan al objeto miembro
+        setIsEdit(true); // Indicamos que estamos en modo edición
+        setEditingMiembro(miembro); // Pasamos el miembro a editar
+        setModalOpen(true);
+    };
+
+    const handleUserAddedSuccessfully = () => {
         console.log('Usuario agregado exitosamente, cerrando modal...');
         handleCloseModal(); // Cierra el modal
         // Opcional: Si quieres recargar la lista de miembros después de agregar uno
@@ -195,125 +206,29 @@ const Miembros = () => {
        <NavBar pages={pages}/>
        <div className="container mt-4">
         <div className="row justify-content-center align-items-center">
-            <div className="col-lg-4 mb-3">
-                <CardForm title="Añadir Miembro" colSize="12">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="row">
-                        <div className="col">
-                            <div className="form-floating mb-3">
-                                <input type="text" className={"form-control "+(isSubmitted?errors.nombre?'is-invalid':'is-valid':'')} placeholder="name@example.com" 
-                                    {...register("nombre",{
-                                        validate: value =>value.trim() !="" || "El nombre no puede estar vacio",
-                                        required: { value: true, message: "Ingresa el nombre" },
-                                        //pattern:{value: /^[a-zA-ZÁ-ÿ\s]+$/,message:"Solo se apcetan letras"},
-                                        //minLength: { value: 3, message: "El nombre debe contener más de 3 caracteres" },
-                                        maxLength:{value:100,message:"Solo se aceptan maximo 100 caracteres "}
-                                    })}
-                                    
-                                />
-                                <label htmlFor="exampleFormControlInput1" className="form-label">Nombre</label>
-                                <div className="invalid-feedback">
-                                    {errors.nombre && errors.nombre.message}
-                                </div>
-                                <FieldError message={msgError?.nombre} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col">
-                            <div className="form-floating mb-3">
-                                <input type="number"  className={"form-control "+(isSubmitted?errors.edad?'is-invalid':'is-valid':'')} placeholder="First Name" {...register("edad",{
-                                valueAsNumber: {value:true,message:"Solo se permiten números"},
-                                required: { value: true, message: "Ingresa tu edad" },
-                                max:{value:100,message:"Edad no válida"},
-                                min:{value:11,message:"El miembro debe ser mayor de 10 años"},       
-                                })} min="0" />
-                                <label htmlFor="exampleFormControlInput1" className="form-label">Edad</label>
-                                <div className="invalid-feedback">
-                                    {errors.edad && errors.edad.message}
-                                </div>
-                                <FieldError message={msgError?.edad} />
-                            </div>
-                        </div>
-                        <div className="col">
-                            <div className="form-floating mb-3">
-                                <input type="tel" className={"form-control "+(isSubmitted?errors.tel?'is-invalid':'is-valid':'')} placeholder="name@example.com" 
-                                    {...register("tel",{
-                                        validate: value =>value.trim() !="" || "El teléfono no puede estar vacio",
-                                        required: { value: true, message: "Ingresa el teléfono" },
-                                        minLength: { value: 10, message: "El teléfono debe contener mínimo 10 caracteres" },
-                                        maxLength: { value: 12, message: "El teléfono debe contener máximo 12 caracteres" },
-                                        //pattern:{value: /^[0-9]+$/,message:"Solo se apcetan números"},
-                                    })}
-                                />
-                                <label htmlFor="exampleFormControlInput1" className="form-label">Teléfono</label>
-                                <div className="invalid-feedback">
-                                    {errors.tel && errors.tel.message}
-                                </div>
-                                <FieldError message={msgError?.tel} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col">
-                            <div className="form-floating mb-3">
-                                <select className={"form-select "+(isSubmitted?errors.plan?'is-invalid':'is-valid':'')} aria-label="Floating label select example"
-                                {...register("proveedor",{
-                                        required:"Selecciona un proveedor"
-                                    })} defaultValue=""
+            <div className="col">
+                <CardForm title="Miembros" colSize="10">
+                    <div className="row mb-3">
+                        <div className="col align-items-end text-end">
+                            <Button  variant="contained" onClick={handleOpenModal} ref={openModalButtonRef}>Agregar Miembro</Button>
+                            {modalOpen && (
+                                 <ModalComponent 
+                                    open={modalOpen}
+                                    handleClose={handleCloseModal}
                                 >
-                                    <option value="" disabled>Elige un plan</option>
-                                    {//providers&&providers.map((val)=><option value={val.id} key={val.id}>{val.nombre}</option>)
-                                    }
-                                
-                                </select>
-                                <label htmlFor="floatingSelect">Plan</label>
-                                <div className="invalid-feedback">
-                                    {errors.plan && errors.plan.message} 
-                                </div>
-                            </div>
+                                    <AddMiembroForm onUserAdded={handleUserAddedSuccessfully} userData={editingMiembro} isEditing={isEdit}/>
+                                        <button onClick={handleCloseModal}>Cancelar</button>
+                                    
+                                </ModalComponent>
+                            )}
                         </div>
                     </div>
-                    <div className="row mt-4">
-                        <div className="d-grid gap-2 col-6 mx-auto">
-                            <LoadingButton
-                            sx={{'color':'white','bgcolor':'#f53d00',borderColor:'rgb(245, 61, 0)',
-                                ':hover': {
-                                    // bgcolor: '#09A28A', // theme.palette.primary.main
-                                    bgcolor:'#ff5024',
-                                    color: 'white',
-                                    borderColor:'#ff5024'
-                                },'.MuiLoadingButton-loadingIndicator':{
-                                    color:'white'
-                                }
-                            ,}}
-                            type="submit"
-                            loading={isLoading}
-                            disabled={!isDirty ? true : false}
-                            loadingPosition="center"
-                            endIcon={<FontAwesomeIcon icon={faUserPlus} size="2xs"  />}
-                            variant="outlined"
-                            >{isEdit ? 'Editar' : 'Agregar'}</LoadingButton>
-                        </div>
-                    </div>
-                    
-                </form>
-                 <Button onClick={handleOpenModal} ref={openModalButtonRef}>Open modal</Button>
-                 <ModalComponent 
-                    open={modalOpen}
-                    handleClose={handleCloseModal}
-                >
-                    <AddMiembroForm onUserAdded={handleUserAddedSuccessfully}/>
-                        <button onClick={handleCloseModal}>Cancelar</button>
-                    
-                </ModalComponent>
+                    <DataTableMiem rows={rows} loading={loading} rowCount={rowCount} setEditValues={setDefValues} setIsEdit={setIsEdit} action={handleEditMiembro}/>
+                </CardForm>
+                
+                                    
+                
 
-                </CardForm>
-            </div>
-            <div className="col-lg-8">
-                <CardForm title="Miembros" colSize="12">
-                    <DataTableMiem rows={rows} loading={loading} rowCount={rowCount} setEditValues={setDefValues} setIsEdit={setIsEdit}/>
-                </CardForm>
             </div>
         </div>
        </div>

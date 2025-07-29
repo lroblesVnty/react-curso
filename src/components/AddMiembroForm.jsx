@@ -7,19 +7,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import Button from '@mui/material/Button';
 import { getPlansList } from "../services/gym.service";
-import { addMember } from "../services/miembors.service";
+import { addMember, updateMember } from "../services/miembors.service";
 import Swal from 'sweetalert2'
 import { getResponseError } from "../models/errorUtils";
+import { use } from "react";
 
-const AddMiembroForm = ({onUserAdded}) => {
+const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
+    const [defaultValues, setDefaultValues] = useState({nombre:'',apellido:'',edad:'',tel:'',plan:''});
+   /* var plan=isEditing && userData?.plan || userData.plan_id;
+    userData.plan=plan;
+    console.log(userData)*/
     const {register,handleSubmit,formState: { errors,isSubmitted,isSubmitSuccessful,isDirty},reset, clearErrors,setValue
-    } = useForm();
+    } = useForm({ defaultValues: isEditing ? userData : defaultValues});
     const [isLoading, setIsLoading] = useState(false)
     const [modalOpen, setModalOpen] = useState(false);
     const [msgError, setMsgError] = useState(null);
     const [isEdit, setIsEdit] = useState(false);
     const [plans, setPlans] = useState([]);
-     const [defValues, setDefValues] = useState({nombre:'',apellido:'',edad:'',tel:''});
 
      const handleCloseModal = () => {
         setModalOpen(false);
@@ -27,8 +31,26 @@ const AddMiembroForm = ({onUserAdded}) => {
 
      useEffect(() => { 
         loadplans()
+        console.log(userData)
+        console.log({isEditing})
        
     },[]);//arreglo vacio para que no itere varias veces
+
+    useEffect(() => {
+        if (userData) {
+        reset(userData);
+        }
+    }, [userData, reset]);
+
+    /*useEffect(() => {
+        if (isEditing && userData) {
+            // Si estamos editando y tenemos userData, resetea el formulario con esos datos.
+            reset(userData);
+        } else if (!isEditing) {
+        // Si no estamos editando (modo agregar), resetea los campos a vacíos.
+            reset(defaultValues);
+        }
+    }, [userData, isEditing, reset]); // Añade 'reset' a las dependencias porque es una función memoizada de useForm*/
 
     const loadplans=async ()=>{
         try {
@@ -53,7 +75,7 @@ const AddMiembroForm = ({onUserAdded}) => {
         setIsLoading(true)
         data.plan_id=data.plan;
         delete data.plan
-        if (isEdit) {
+        if (isEditing) {
             if (isDirty) {
                 console.log('editando')
                 try {
@@ -64,15 +86,15 @@ const AddMiembroForm = ({onUserAdded}) => {
                             onUserAdded();
                         }
                         Swal.fire({
-                            position: 'center',
                             icon: 'success',
-                            title:'Actualizado Correctamente',
-                            showConfirmButton: true,
-                            allowOutsideClick:false,
+                            title: '¡Usuario agregado!',
+                            text: 'El nuevo usuario se ha registrado correctamente.',
+                            showConfirmButton: false,
+                            timer: 1500 // El mensaje se cerrará automáticamente después de 1.5 segundos
                         });
                         setMsgError(null)
                         //setIsSucces(true)
-                        setDefValues({nombre:'',apellido:'',edad:'',tel:''})
+                        setDefaultValues({nombre:'',apellido:'',edad:'',tel:''})
                         setIsEdit(false)
                     }
 
@@ -111,7 +133,7 @@ const AddMiembroForm = ({onUserAdded}) => {
                     });
                     setMsgError(null)
                     //setIsSucces(true)
-                    setDefValues({nombre:'',apellido:'',edad:'',tel:''})
+                    setDefaultValues({nombre:'',apellido:'',edad:'',tel:''})
                     setIsEdit(false)
                     reset()
                 }
@@ -148,7 +170,7 @@ const AddMiembroForm = ({onUserAdded}) => {
     
     }
     return (
-         <CardForm title="Añadir Miembro" colSize="12">
+         <CardForm title={isEditing ? 'Editar Miembro' : 'Agregar Miembro'} colSize="12">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
                         <div className="col">
@@ -231,10 +253,11 @@ const AddMiembroForm = ({onUserAdded}) => {
                                 <select className={"form-select "+(isSubmitted?errors.plan?'is-invalid':'is-valid':'')} aria-label="Floating label select example"
                                 {...register("plan",{
                                         required:"Selecciona un Plan"
-                                    })} defaultValue=""
+                                    })}
+                                name="floatingSelect" id="floatingSelect"
                                 >
                                     <option value="" disabled>Elige un plan</option>
-                                    {plans&&plans.map((val)=><option value={val.id} key={val.id}>{val.nombre_plan}</option>)}
+                                    {plans&&plans.map((val)=><option value={Number(val.id)} key={val.id}>{val.nombre_plan}</option>)}
                                     
                                 
                                 </select>
@@ -264,7 +287,7 @@ const AddMiembroForm = ({onUserAdded}) => {
                             loadingPosition="center"
                             endIcon={<FontAwesomeIcon icon={faUserPlus} size="2xs"  />}
                             variant="outlined"
-                            >{isEdit ? 'Editar' : 'Agregar'}</LoadingButton>
+                            >{isEditing ? 'Editar' : 'Agregar'}</LoadingButton>
                         </div>
                     </div>
                     

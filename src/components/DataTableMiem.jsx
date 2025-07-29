@@ -8,7 +8,7 @@ import { faPencil} from '@fortawesome/free-solid-svg-icons'
 import {useCallback} from 'react';
 import { RenderStatus } from './RenderStatus';
 
-const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit}) => {
+const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action}) => {
     const [pageSize, setPageSize] = useState(5);
     //const [rowCount, setRowCount] = useState(0);
     //const updatedState = [...loading ,  loading];
@@ -20,14 +20,12 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit}) => {
 
     const columns= [
         { field: 'id', headerName: 'Id', flex: 1,maxWidth:50,headerClassName: 'theme-header'},
-        { field: 'nombre', headerName: 'Nombre Miembro',flex: 1,headerClassName: 'theme-header',
-        headerAlign: 'center',align:'center' },
+        { field: 'nombre', headerName: 'Nombre Miembro',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center' },
+        { field: 'apellido', headerName: 'Apellido Miembro',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center' },
         { field: 'edad', headerName: 'Edad',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center'},
-        { field: 'tel', headerName: 'Teléfono',flex: 1,description:
-        'The identification used by the person with access to the online service.',headerClassName: 'theme-header',
-        headerAlign: 'center',align:'center'},
-        { field: 'activo', headerName: 'Estatus',flex: 1,description:
-        'Estatus del plan ',headerClassName: 'theme-header',
+        { field: 'tel', headerName: 'Teléfono',flex: 1,description:'Teléfono del miembro.',headerClassName: 'theme-header',headerAlign: 'center',align:'center'},
+        { field: 'plan', headerName: 'Plan',flex: 1,description:'Plan del miembro.',headerClassName: 'theme-header',headerAlign: 'center',align:'center',valueGetter: (params) => params.row.plan.nombre_plan,},
+        { field: 'activo', headerName: 'Estatus',flex: 1,description:'Estatus del plan ',headerClassName: 'theme-header',
         headerAlign: 'center',align:'center',renderCell: RenderStatus},
         {   
             maxWidth:50,
@@ -52,6 +50,7 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit}) => {
             console.log(row)
             setEditValues({...row});
             setIsEdit(true)
+            action(row);
             //navigate("/editar/"+id);
             //window.open('#/products/edit/'+id,'_blank')
         },

@@ -10,6 +10,11 @@ export const  addMember=async (data)=>{
     return response
 }
 
+export const  getMember=async (id)=>{
+    const response= await apiGym.get('/miembro/'+id); 
+    return response
+}
+
 export const  getMembers=async ()=>{
    // const response= await apiGym.get('/miembro') 
     const response= await apiGym.get('/status/miembro') 
