@@ -38,24 +38,19 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action}) =
                 <GridActionsCellItem
                     icon={<FontAwesomeIcon icon={faPencil} size="xs" style={{color: "#ff6600",}} />}
                     label="Editar"
-                    onClick={edit(params.row)}
+                    onClick={() => edit(params.row)}
                 />,
              
             ],
         },
     ];
 
-    const edit = useCallback(
-        (row) => () => {
-            console.log(row)
-            setEditValues({...row});
-            setIsEdit(true)
-            action(row);
-            //navigate("/editar/"+id);
-            //window.open('#/products/edit/'+id,'_blank')
-        },
-        [],
-    );
+   const edit = useCallback((row) => {
+        console.log(row);
+        setEditValues({ ...row });
+        setIsEdit(true);
+        action(row);
+    }, []);
 
    
     return (

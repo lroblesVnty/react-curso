@@ -65,13 +65,15 @@ const Miembros = () => {
         setModalOpen(false);
     };
 
-    const handleEditMiembro = (miembro) => {
+    const handleEditMiembro = (miembroOrg) => {
+        const miembro = { ...miembroOrg };
         var plan=miembro.plan ? miembro.plan.id : null; // Aseguramos que plan sea un ID válido
         delete miembro.plan; // Eliminamos la propiedad plan del objeto miembro
         miembro.plan = plan; // Asignamos el ID del plan al objeto miembro
         setIsEdit(true); // Indicamos que estamos en modo edición
         setEditingMiembro(miembro); // Pasamos el miembro a editar
         setModalOpen(true);
+        console.log(miembro)
     };
 
     const handleUserAddedSuccessfully = () => {

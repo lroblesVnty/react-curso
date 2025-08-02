@@ -24,6 +24,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
     const [msgError, setMsgError] = useState(null);
     const [isEdit, setIsEdit] = useState(false);
     const [plans, setPlans] = useState([]);
+    //TODO VERIFICAR QUE CARGUE EL PLAN SELECCIONADO EN EL SELECT
 
      const handleCloseModal = () => {
         setModalOpen(false);
@@ -36,11 +37,19 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
        
     },[]);//arreglo vacio para que no itere varias veces
 
+   // useEffect para manejar la inicialización del formulario
     useEffect(() => {
-        if (userData) {
-        reset(userData);
+        if (isEditing && userData && plans.length > 0) {
+            reset({
+            plan: userData.plan,
+            // otros campos si es necesario
+        });
         }
-    }, [userData, reset]);
+    }, [isEditing, userData, plans, reset]); // ← importante incluir `plans`
+
+
+
+   
 
     /*useEffect(() => {
         if (isEditing && userData) {
@@ -74,10 +83,12 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
         console.log({isDirty})
         setIsLoading(true)
         data.plan_id=data.plan;
+        data.id=userData.id;
         delete data.plan
         if (isEditing) {
             if (isDirty) {
                 console.log('editando')
+                console.log(data)
                 try {
                     const resp=await updateMember(data)
                     console.log(resp)
@@ -88,13 +99,13 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                         Swal.fire({
                             icon: 'success',
                             title: '¡Usuario agregado!',
-                            text: 'El nuevo usuario se ha registrado correctamente.',
+                            text: 'El usuario se ha actualizado correctamente.',
                             showConfirmButton: false,
                             timer: 1500 // El mensaje se cerrará automáticamente después de 1.5 segundos
                         });
                         setMsgError(null)
                         //setIsSucces(true)
-                        setDefaultValues({nombre:'',apellido:'',edad:'',tel:''})
+                        setDefaultValues({nombre:'',apellido:'',edad:'',tel:'',plan:''})
                         setIsEdit(false)
                     }
 
@@ -254,7 +265,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                                 {...register("plan",{
                                         required:"Selecciona un Plan"
                                     })}
-                                name="floatingSelect" id="floatingSelect"
+                                name="plan" id="plan"
                                 >
                                     <option value="" disabled>Elige un plan</option>
                                     {plans&&plans.map((val)=><option value={Number(val.id)} key={val.id}>{val.nombre_plan}</option>)}
