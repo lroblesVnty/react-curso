@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil} from '@fortawesome/free-solid-svg-icons'
 import {useCallback} from 'react';
 import { RenderStatus } from './RenderStatus';
+import AddCardIcon from '@mui/icons-material/AddCard';
+import EditIcon from '@mui/icons-material/Edit';
 
 const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action}) => {
     const [pageSize, setPageSize] = useState(5);
@@ -27,22 +29,27 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action}) =
         { field: 'plan', headerName: 'Plan',flex: 1,description:'Plan del miembro.',headerClassName: 'theme-header',headerAlign: 'center',align:'center',valueGetter: (params) => params.row.plan.nombre_plan,},
         { field: 'activo', headerName: 'Estatus',flex: 1,description:'Estatus del plan ',headerClassName: 'theme-header',
         headerAlign: 'center',align:'center',renderCell: RenderStatus},
-        {   
-            maxWidth:50,
-            headerClassName: 'theme-header',
-            description:'Editar',
-            field: 'actions',
-            type: 'actions',
-            align:'right',
-            getActions: (params) => [
-                <GridActionsCellItem
-                    icon={<FontAwesomeIcon icon={faPencil} size="xs" style={{color: "#ff6600",}} />}
-                    label="Editar"
-                    onClick={() => edit(params.row)}
-                />,
-             
-            ],
-        },
+       
+        {
+        field: 'actions',
+        type: 'actions',
+        width: 80,
+        getActions: (params) => [
+          <GridActionsCellItem
+            icon={<AddCardIcon />}
+            label="Registrar Pago"
+            //onClick={toggleAdmin(params.id)}
+            showInMenu
+          />,
+          <GridActionsCellItem
+            //icon={<FontAwesomeIcon icon={faPencil} size="xs" style={{color: "#ff6600",}} />}
+            icon={<EditIcon />}
+            label="Editar Miembro"
+            //onClick={duplicateUser(params.id)}
+            showInMenu
+          />,
+        ],
+      },
     ];
 
    const edit = useCallback((row) => {

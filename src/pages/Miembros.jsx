@@ -13,6 +13,7 @@ import DataTableMiem from "../components/DataTableMiem";
 import Button from '@mui/material/Button';
 import ModalComponent from "../components/Modal";
 import AddMiembroForm from "../components/AddMiembroForm";
+import AddPagoForm from "../components/AddPagoForm";
 
 
 
@@ -29,6 +30,7 @@ const Miembros = () => {
     const [msgError, setMsgError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalPagoOpen, setModalPagoOpen] = useState(false);
     const [rowCount, setRowCount] = useState(0);
     const [rows, setRows] = useState([]);
     const [defValues, setDefValues] = useState({nombre:'',edad:'',tel:''});
@@ -113,96 +115,7 @@ const Miembros = () => {
         
     }
 
-    const onSubmit = async (data) =>{
-        console.log({isDirty})
-        setIsLoading(true)
-        console.log(data)
-        if (isEdit) {
-            if (isDirty) {
-                console.log('editando')
-                try {
-                    const resp=await updateMember(data)
-                    console.log(resp)
-                    if (resp.status==200) {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title:'Actualizado Correctamente',
-                            showConfirmButton: true,
-                            allowOutsideClick:false,
-                        });
-                        setMsgError(null)
-                        //setIsSucces(true)
-                        setDefValues({nombre:'',edad:'',tel:''})
-                        setIsEdit(false)
-                    }
-
-                } catch (error) {
-                    Swal.fire({
-                        position: 'top',
-                        icon: 'error',
-                        title:error.message,
-                        showConfirmButton: true,
-                        allowOutsideClick:false,
-                    });
-                    console.log(error)
-                    if (error.response.status==422) {
-                       setMsgError(getResponseError(error))
-                    }
-                }finally{
-                    setIsLoading(false)
-                }
-            }
-        }else{
-            try {
-                const resp= await addMember(data)
-                console.log(resp)
-                if (resp.status==201) {
-                    
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title:'Registro exitoso',
-                        showConfirmButton: true,
-                        allowOutsideClick:false,
-                    });
-                    setMsgError(null)
-                    //setIsSucces(true)
-                    setDefValues({nombre:'',edad:'',tel:''})
-                    setIsEdit(false)
-                }
-            } catch (error) {
-                Swal.fire({
-                    position: 'top',
-                    icon: 'error',
-                    title:error.message,
-                    showConfirmButton: true,
-                    allowOutsideClick:false,
-                });
-                console.log(error)
-                console.log(error.response.data)
-               // setMsgErrors(error.response.data.errors)
-                if (error.response.status==422) {
-                   setMsgError(getResponseError(error))
-                    /*setMsgError({
-                        ...msgError, // Copy other fields
-                        ['data']: error.response.data.errors
-                    });*/
-                
-                    /*setMsgError({
-                        ...msgError, // Copy other fields
-                        ['errors']: error.response.data.errors
-                    });*/
-                    //setMsgError(prevState => ({ ...prevState, data: [...prevState.data,error.response.data.errors]}));
-                    //setMsgError(oldArray => [...oldArray,error.response.data.errors ]);
-                }
-            }finally{
-                setIsLoading(false)
-            }
-        }
-       
-
-    }
+   
     return (
     <>
        <NavBar pages={pages}/>
@@ -223,6 +136,16 @@ const Miembros = () => {
                                     
                                 </ModalComponent>
                             )}
+                             <ModalComponent 
+                                    open={modalPagoOpen}
+                                    handleClose={handleCloseModal}
+                                >
+                                    <AddPagoForm />
+                                    
+                                        <Button variant="outlined" onClick={handleCloseModal}>
+                                            Cerrar
+                                        </Button>
+                                </ModalComponent>
                         </div>
                     </div>
                     <DataTableMiem rows={rows} loading={loading} rowCount={rowCount} setEditValues={setDefValues} setIsEdit={setIsEdit} action={handleEditMiembro}/>
