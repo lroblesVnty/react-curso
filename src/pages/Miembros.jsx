@@ -1,6 +1,6 @@
 import CardForm from "../components/CardForm";
 import NavBar from "../components/NavBar";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import  { useState,useEffect,useRef } from "react";
 import LoadingButton from '@mui/lab/LoadingButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,6 +14,10 @@ import Button from '@mui/material/Button';
 import ModalComponent from "../components/Modal";
 import AddMiembroForm from "../components/AddMiembroForm";
 import AddPagoForm from "../components/AddPagoForm";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import IconButton from '@mui/material/IconButton';
+import { Tooltip } from "@mui/material";
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 
 
@@ -37,6 +41,7 @@ const Miembros = () => {
     const [isEdit, setIsEdit] = useState(false);
     const [isSucces, setIsSucces] = useState(false);
     const [editingMiembro, setEditingMiembro] = useState(null);
+    const [dataPago, setDataPago] = useState(null);
     //TODO condicionar el metodo onsubmit para mandar a guardar si isediting es falso
       const openModalButtonRef = useRef(null);
 
@@ -67,6 +72,10 @@ const Miembros = () => {
         setModalOpen(false);
     };
 
+    const handleCloseModalPago = () => {
+        setModalPagoOpen(false);
+    };
+
     const handleEditMiembro = (miembroOrg) => {
         const miembro = { ...miembroOrg };
         var plan=miembro.plan ? miembro.plan.id : null; // Aseguramos que plan sea un ID válido
@@ -76,6 +85,13 @@ const Miembros = () => {
         setEditingMiembro(miembro); // Pasamos el miembro a editar
         setModalOpen(true);
         console.log(miembro)
+    };
+
+    const handleAddPago = (miembroOrg) => {
+        const miembro = { ...miembroOrg };
+        setDataPago(miembro);
+        setModalPagoOpen(true);
+
     };
 
     const handleUserAddedSuccessfully = () => {
@@ -123,9 +139,24 @@ const Miembros = () => {
         <div className="row justify-content-center align-items-center">
             <div className="col">
                 <CardForm title="Miembros" colSize="10">
-                    <div className="row mb-3">
-                        <div className="col align-items-end text-end">
-                            <Button  variant="contained" onClick={handleOpenModal} ref={openModalButtonRef}>Agregar Miembro</Button>
+                    <div className="row mb-3 justify-content-end">
+                        <div className="col align-items-end text-end col-auto">
+                        //TODO crear formulario para registrar una visita
+                            <Tooltip title="Registrar Visita">
+                                <IconButton aria-label="delete"  onClick={handleOpenModal} color="secondary">
+                                    <MoreTimeIcon fontSize="inherit" />
+                                </IconButton>
+                            </Tooltip>
+
+                        </div>
+                        <div className="col align-items-end text-end col-auto">
+                            {/* <Button  variant="contained" onClick={handleOpenModal} ref={openModalButtonRef}>Agregar Miembro</Button> */}
+                            <Tooltip title="Agregar Miembro">
+                                <IconButton aria-label="delete"  onClick={handleOpenModal} color="secondary">
+                                    <PersonAddIcon fontSize="inherit" />
+                                </IconButton>
+                            </Tooltip>
+                                
                             {modalOpen && (
                                  <ModalComponent 
                                     open={modalOpen}
@@ -136,19 +167,20 @@ const Miembros = () => {
                                     
                                 </ModalComponent>
                             )}
-                             <ModalComponent 
+                            {modalPagoOpen && (
+                                <ModalComponent
                                     open={modalPagoOpen}
-                                    handleClose={handleCloseModal}
+                                    handleClose={handleCloseModalPago}
                                 >
-                                    <AddPagoForm />
-                                    
-                                        <Button variant="outlined" onClick={handleCloseModal}>
+                                    <AddPagoForm miembroData={dataPago} openModal={setModalPagoOpen} />
+                                        <Button variant="outlined" onClick={handleCloseModalPago}>
                                             Cerrar
                                         </Button>
                                 </ModalComponent>
+                            )}
                         </div>
                     </div>
-                    <DataTableMiem rows={rows} loading={loading} rowCount={rowCount} setEditValues={setDefValues} setIsEdit={setIsEdit} action={handleEditMiembro}/>
+                    <DataTableMiem rows={rows} loading={loading} rowCount={rowCount} setEditValues={setDefValues} setIsEdit={setIsEdit} action={handleEditMiembro} actionAdd={handleAddPago}/>
                 </CardForm>
                 
                                     

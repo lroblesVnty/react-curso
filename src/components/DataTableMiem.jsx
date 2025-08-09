@@ -10,7 +10,7 @@ import { RenderStatus } from './RenderStatus';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import EditIcon from '@mui/icons-material/Edit';
 
-const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action}) => {
+const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action,actionAdd}) => {
     const [pageSize, setPageSize] = useState(5);
     //const [rowCount, setRowCount] = useState(0);
     //const updatedState = [...loading ,  loading];
@@ -39,6 +39,8 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action}) =
             icon={<AddCardIcon />}
             label="Registrar Pago"
             //onClick={toggleAdmin(params.id)}
+            onClick={() => addPago(params.row)}
+            disabled={params.row.activo}
             showInMenu
           />,
           <GridActionsCellItem
@@ -46,6 +48,7 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action}) =
             icon={<EditIcon />}
             label="Editar Miembro"
             //onClick={duplicateUser(params.id)}
+            onClick={() => edit(params.row)}
             showInMenu
           />,
         ],
@@ -57,6 +60,11 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action}) =
         setEditValues({ ...row });
         setIsEdit(true);
         action(row);
+    }, []);
+
+   const addPago = useCallback((row) => {
+        console.log(row);
+        actionAdd(row);
     }, []);
 
    
@@ -157,7 +165,8 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action}) =
                     showQuickFilter: true,
                     quickFilterProps: { debounceMs: 500 },
                     csvOptions: { disableToolbarButton: true },
-                    //printOptions: { disableToolbarButton: true },
+                   // exportButton: false
+                    printOptions: { disableToolbarButton: true },
                 },
                 footer: { total: rowCount }
             }}

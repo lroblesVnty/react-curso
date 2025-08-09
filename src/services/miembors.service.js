@@ -40,3 +40,8 @@ export const  addPlan=async (data)=>{
     const response= await apiGym.post('/plan',data) 
     return response
 }
+
+export const  addPago=async (data)=>{
+    const response= await apiGym.post('/pago',data) 
+    return response
+}
