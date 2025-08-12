@@ -83,10 +83,10 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
         console.log({isDirty})
         setIsLoading(true)
         data.plan_id=data.plan;
-        data.id=userData.id;
         delete data.plan
         if (isEditing) {
             if (isDirty) {
+                data.id=userData.id;
                 console.log('editando')
                 console.log(data)
                 try {

@@ -141,7 +141,6 @@ const Miembros = () => {
                 <CardForm title="Miembros" colSize="10">
                     <div className="row mb-3 justify-content-end">
                         <div className="col align-items-end text-end col-auto">
-                        //TODO crear formulario para registrar una visita
                             <Tooltip title="Registrar Visita">
                                 <IconButton aria-label="delete"  onClick={handleOpenModal} color="secondary">
                                     <MoreTimeIcon fontSize="inherit" />
