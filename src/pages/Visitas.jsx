@@ -18,10 +18,15 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import IconButton from '@mui/material/IconButton';
 import { Tooltip } from "@mui/material";
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
+import { getVisitasList } from "../services/gym.service";
+import DataTableComponent from "../components/DataTableComponent";
+import AddVisitaForm from "../components/AddVisitaForm";
 
 const pages=['Miembros','Products','Blog']
 
 const Visitas = () => {
+    //TODO agregar una columna al final con un boton para cerrar la visita
+    //TODO listar solo las visitas del dia actual y añadir otro boton para mostrar el historial de las visitas
      const {
         register,handleSubmit,formState: { errors,isSubmitted,isSubmitSuccessful,isDirty},reset, clearErrors,setValue
     } = useForm();
@@ -37,12 +42,17 @@ const Visitas = () => {
     const [defValues, setDefValues] = useState({nombre:'',edad:'',tel:''});
     const [isEdit, setIsEdit] = useState(false);
     const [isSucces, setIsSucces] = useState(false);
-    const [editingMiembro, setEditingMiembro] = useState(null);
     const [dataPago, setDataPago] = useState(null);
-    //TODO condicionar el metodo onsubmit para mandar a guardar si isediting es falso
-      const openModalButtonRef = useRef(null);
+    const openModalButtonRef = useRef(null);
 
 
+
+    useEffect(() => {
+        (async()=>{
+            getVisitas()
+        })();
+       
+    },[]);//arreglo vacio para que no itere varias veces
 
     const handleOpenModal = () => {
         setIsEdit(false);
@@ -51,6 +61,44 @@ const Visitas = () => {
     const handleCloseModal = () => {
         setModalOpen(false);
     };
+
+    const handleUserAddedSuccessfully = () => {
+        console.log('visita agregada exitosamente, cerrando modal...');
+        handleCloseModal(); // Cierra el modal
+        // Opcional: Si quieres recargar la lista de miembros después de agregar uno
+        getVisitas(); // Llama a tu función para obtener los miembros actualizados
+    };
+
+
+    const getVisitas=async ()=>{
+            setLoading(true)
+            try {
+                const resp= await getVisitasList()
+                console.log(resp)
+                setLoading(false)
+                if (resp.status==200) {
+                    if (resp.data) {
+                        setRows(resp.data)
+                        setRowCount(resp.data.length)
+                        //console.log(resp.data.length)
+                    }
+                }
+            } catch (error) {
+                
+                Swal.fire({
+                    position: 'top',
+                    icon: 'error',
+                    title:error.message,
+                    showConfirmButton: true,
+                    allowOutsideClick:false,
+                });
+                
+            }finally{
+                setLoading(false)
+            }
+            
+            
+    }
    
     return (
         <>
@@ -65,44 +113,23 @@ const Visitas = () => {
 
                             }
                                     <Tooltip title="Registrar Visita">
-                                        <IconButton aria-label="delete"  onClick={handleOpenModal} color="secondary">
+                                        <IconButton aria-label="add"  onClick={handleOpenModal} color="secondary">
                                             <MoreTimeIcon fontSize="inherit" />
                                         </IconButton>
                                     </Tooltip>
-
-                                </div>
-                                <div className="col align-items-end text-end col-auto">
-                                    {/* <Button  variant="contained" onClick={handleOpenModal} ref={openModalButtonRef}>Agregar Miembro</Button> */}
-                                    <Tooltip title="Agregar Miembro">
-                                        <IconButton aria-label="delete"  onClick={handleOpenModal} color="secondary">
-                                            <PersonAddIcon fontSize="inherit" />
-                                        </IconButton>
-                                    </Tooltip>
-                                        
                                     {modalOpen && (
                                         <ModalComponent 
                                             open={modalOpen}
                                             handleClose={handleCloseModal}
                                         >
-                                            <AddMiembroForm onUserAdded={handleUserAddedSuccessfully} userData={editingMiembro} isEditing={isEdit}/>
+                                            <AddVisitaForm onUserAdded={handleUserAddedSuccessfully} openModal={setModalOpen} />
                                                 <button onClick={handleCloseModal}>Cancelar</button>
                                             
                                         </ModalComponent>
                                     )}
-                                    {modalPagoOpen && (
-                                        <ModalComponent
-                                            open={modalPagoOpen}
-                                            handleClose={handleCloseModalPago}
-                                        >
-                                            <AddPagoForm miembroData={dataPago} openModal={setModalPagoOpen} />
-                                                <Button variant="outlined" onClick={handleCloseModalPago}>
-                                                    Cerrar
-                                                </Button>
-                                        </ModalComponent>
-                                    )}
                                 </div>
                             </div>
-                            <DataTableMiem rows={rows} loading={loading} rowCount={rowCount} setEditValues={setDefValues} setIsEdit={setIsEdit} />
+                            <DataTableComponent rows={rows} loading={loading} rowCount={rowCount}  />
                         </CardForm>
                         
                                             

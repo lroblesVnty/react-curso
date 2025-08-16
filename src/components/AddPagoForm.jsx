@@ -178,7 +178,7 @@ const AddPagoForm = ({miembroData,openModal}) => {
                             />
                             <label htmlFor="fechaPago" className="form-label">Fecha de Pago</label>
                             <div className="invalid-feedback">
-                                {errors.monto && errors.fechaPago?.message}
+                                {errors.fechaPago && errors.fechaPago?.message}
                             </div>
                             <FieldError message={msgError?.fechaPago} />
                         </div>

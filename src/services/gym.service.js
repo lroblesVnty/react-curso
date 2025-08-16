@@ -8,3 +8,13 @@ export const  getPlansList=async ()=>{
     const response= await apiProductos.get('/plans') 
     return response
 }
+
+export const  getVisitasList=async ()=>{
+    const response= await apiProductos.get('/visitas') 
+    return response
+}
+
+export const  addVisita=async (data)=>{
+    const response= await apiProductos.post('/visitas', data) 
+    return response
+}
