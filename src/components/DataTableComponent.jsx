@@ -13,7 +13,7 @@ import { splitDateTime } from '../utils/dateUtils';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import { Tooltip } from '@mui/material';
 
-const DataTableComponent = ({rows,loading,rowCount,actionRow}) => {
+const DataTableComponent = ({rows,loading,rowCount,cols}) => {
     const [pageSize, setPageSize] = useState(5);
     //const [rowCount, setRowCount] = useState(0);
     //const updatedState = [...loading ,  loading];
@@ -23,45 +23,7 @@ const DataTableComponent = ({rows,loading,rowCount,actionRow}) => {
     //const [loading, setLoading] = useState(false);
    // const [rows, setRows] = useState([]);
 
-    const columns= [
-        { field: 'id', headerName: 'Id', flex: 1,maxWidth:50,headerClassName: 'theme-header'},
-        { field: 'usuario', headerName: 'Nombre Usuario',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center' },
-        { field: 'visited_at', headerName: 'Fecha Visita',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center',
-        valueGetter: (params) => {
-            const { date } = splitDateTime(params.row.visited_at);
-            return date;
-        }
-        },
-        {field: 'visita_hora',headerName: 'Hora Visita',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center',
-        valueGetter: (params) => {
-            const { time } = splitDateTime(params.row.visited_at);
-            return time;
-        },
-        },
-        {
-        field: 'actions',
-        type: 'actions',
-        width: 80,
-        getActions: (params) => [
-            <Tooltip title="Cerrar Visita">
-                <GridActionsCellItem
-                    icon={<EventAvailableIcon sx={{ color: "#050505ff" }} />}
-                    label="Cerrar"
-                    onClick={() => handleFnClick(params.row)}
-                
-                />
-            </Tooltip>,
-        ],
-      },
-    ];
-
-
-    const handleFnClick = useCallback((row) => {
-        console.log("Row clicked:", row);
-         actionRow(row);
-    }, []);
-
-
+   
   
 
    
@@ -145,7 +107,7 @@ const DataTableComponent = ({rows,loading,rowCount,actionRow}) => {
                                 }}*/
             }}
             rows={rows}
-            columns={columns}
+            columns={cols}
             pageSize={pageSize}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             rowsPerPageOptions={[5, 10, 20]}

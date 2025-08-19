@@ -21,32 +21,15 @@ import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import { getVisitasList } from "../services/gym.service";
 import DataTableComponent from "../components/DataTableComponent";
 import AddVisitaForm from "../components/AddVisitaForm";
-import {visitasColumns} from "../config/columnsConfig";
+import { asistenciaColumns } from "../config/columnsConfig";
 
 const pages=['Miembros','Products','Blog']
-
-const Visitas = () => {
-    //TODO agregar una columna al final con un boton para cerrar la visita
-    //TODO listar solo las visitas del dia actual y añadir otro boton para mostrar el historial de las visitas
-     const {
-        register,handleSubmit,formState: { errors,isSubmitted,isSubmitSuccessful,isDirty},reset, clearErrors,setValue
-    } = useForm();
-    const [isLoading, setIsLoading] = useState(false)
-    //const [msgError, setMsgError] = useState({data:[{nombre:"dsada"},{"nombre":"dsarwe"}]})
-    //*const [msgError, setMsgError] = useState({data:[{nombre:['dsa','fds']}]})
-    const [msgError, setMsgError] = useState(null);
+const Asistencia = () => {
     const [loading, setLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const [modalPagoOpen, setModalPagoOpen] = useState(false);
     const [rowCount, setRowCount] = useState(0);
     const [rows, setRows] = useState([]);
-    const [defValues, setDefValues] = useState({nombre:'',edad:'',tel:''});
     const [isEdit, setIsEdit] = useState(false);
-    const [isSucces, setIsSucces] = useState(false);
-    const [dataPago, setDataPago] = useState(null);
-    const openModalButtonRef = useRef(null);
-
-
 
     useEffect(() => {
         (async()=>{
@@ -74,54 +57,51 @@ const Visitas = () => {
     const handleColAction=(row)=>{
         console.log('Acción de columna realizada en la fila:', row);
     }
+    const columns = useMemo(() => asistenciaColumns(handleColAction ), [handleColAction]);
 
-    const columns = useMemo(() => visitasColumns(handleColAction ), [handleColAction]);
-
-
-
-    const getVisitas=async ()=>{
-            setLoading(true)
-            try {
-                const resp= await getVisitasList()
-                console.log(resp)
-                setLoading(false)
-                if (resp.status==200) {
-                    if (resp.data) {
-                        setRows(resp.data)
-                        setRowCount(resp.data.length)
-                        //console.log(resp.data.length)
+     const getVisitas=async ()=>{
+                setLoading(true)
+                try {
+                    const resp= await getVisitasList()
+                    console.log(resp)
+                    setLoading(false)
+                    if (resp.status==200) {
+                        if (resp.data) {
+                            setRows(resp.data)
+                            setRowCount(resp.data.length)
+                            //console.log(resp.data.length)
+                        }
                     }
+                } catch (error) {
+                    
+                    Swal.fire({
+                        position: 'top',
+                        icon: 'error',
+                        title:error.message,
+                        showConfirmButton: true,
+                        allowOutsideClick:false,
+                    });
+                    
+                }finally{
+                    setLoading(false)
                 }
-            } catch (error) {
                 
-                Swal.fire({
-                    position: 'top',
-                    icon: 'error',
-                    title:error.message,
-                    showConfirmButton: true,
-                    allowOutsideClick:false,
-                });
                 
-            }finally{
-                setLoading(false)
-            }
-            
-            
     }
-   
+
     return (
         <>
             <NavBar pages={pages}/>
             <div className="container mt-4">
                 <div className="row justify-content-center align-items-center">
                     <div className="col">
-                        <CardForm title="Visitas" colSize="10">
+                        <CardForm title="Asistencia" colSize="10">
                             <div className="row mb-3 justify-content-end">
                                 <div className="col align-items-end text-end col-auto">
                             { //TODO crear formulario para registrar una visita y listar las vistas
 
                             }
-                                    <Tooltip title="Registrar Visita">
+                                    <Tooltip title="Registrar Asistencia">
                                         <IconButton aria-label="add"  onClick={handleOpenModal} color="secondary">
                                             <MoreTimeIcon fontSize="inherit" />
                                         </IconButton>
@@ -138,7 +118,7 @@ const Visitas = () => {
                                     )}
                                 </div>
                             </div>
-                            <DataTableComponent rows={rows} loading={loading} rowCount={rowCount} cols={columns}  />
+                            <DataTableComponent rows={rows} loading={loading} rowCount={rowCount} cols={columns} />
                         </CardForm>
                         
                                             
@@ -148,7 +128,6 @@ const Visitas = () => {
                 </div>
             </div>
         </>
-
     )
 }
-export default Visitas
+export default Asistencia
