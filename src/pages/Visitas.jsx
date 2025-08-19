@@ -25,7 +25,7 @@ import AddVisitaForm from "../components/AddVisitaForm";
 const pages=['Miembros','Products','Blog']
 
 const Visitas = () => {
-    //TODO agregar una columna al final con un boton para cerrar la visita
+    //TODO adaptar la tabla de visitas, falta agregar el campo de la hora de salida de la visita
     //TODO listar solo las visitas del dia actual y añadir otro boton para mostrar el historial de las visitas
      const {
         register,handleSubmit,formState: { errors,isSubmitted,isSubmitSuccessful,isDirty},reset, clearErrors,setValue
@@ -69,6 +69,10 @@ const Visitas = () => {
         getVisitas(); // Llama a tu función para obtener los miembros actualizados
     };
 
+    const handleCloseVisita = (miembro) => {
+        console.log('Cerrando visita para el miembro:', miembro);
+
+    }
 
     const getVisitas=async ()=>{
             setLoading(true)
@@ -129,7 +133,7 @@ const Visitas = () => {
                                     )}
                                 </div>
                             </div>
-                            <DataTableComponent rows={rows} loading={loading} rowCount={rowCount}  />
+                            <DataTableComponent rows={rows} loading={loading} rowCount={rowCount} actionRow={handleCloseVisita} />
                         </CardForm>
                         
                                             

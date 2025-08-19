@@ -1,17 +1,18 @@
 import {DataGrid,GridToolbar,GridActionsCellItem} from '@mui/x-data-grid';
 import esESGrid from '../models/mui-Es';
 import { CustomFooter } from "../components/CustomFooter";
-import  { useState,useEffect } from "react";
+import  { useState,useEffect,useCallback } from "react";
 import CustomPagination from './CustomPagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil} from '@fortawesome/free-solid-svg-icons'
-import {useCallback} from 'react';
 import { RenderStatus } from './RenderStatus';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import EditIcon from '@mui/icons-material/Edit';
 import { splitDateTime } from '../utils/dateUtils';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import { Tooltip } from '@mui/material';
 
-const DataTableComponent = ({rows,loading,rowCount}) => {
+const DataTableComponent = ({rows,loading,rowCount,actionRow}) => {
     const [pageSize, setPageSize] = useState(5);
     //const [rowCount, setRowCount] = useState(0);
     //const updatedState = [...loading ,  loading];
@@ -36,12 +37,29 @@ const DataTableComponent = ({rows,loading,rowCount}) => {
             return time;
         },
         },
+        {
+        field: 'actions',
+        type: 'actions',
+        width: 80,
+        getActions: (params) => [
+            <Tooltip title="Cerrar Visita">
+                <GridActionsCellItem
+                    icon={<EventAvailableIcon sx={{ color: "#050505ff" }} />}
+                    label="Cerrar"
+                    onClick={() => handleFnClick(params.row)}
+                
+                />
+            </Tooltip>,
+        ],
+      },
+];
 
-    ];
 
-  
+    const handleFnClick = useCallback((row) => {
+        console.log("Row clicked:", row);
+         actionRow(row);
+    }, []);
 
-   
     return (
         <div style={{ height: 420, width: "100%" }}>
         <DataGrid
