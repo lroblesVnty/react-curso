@@ -1,10 +1,11 @@
 import {DataGrid,GridToolbar,GridActionsCellItem} from '@mui/x-data-grid';
 import esESGrid from '../models/mui-Es';
 import { CustomFooter } from "../components/CustomFooter";
-import  { useState,useEffect,useCallback } from "react";
+import  { useState,useEffect } from "react";
 import CustomPagination from './CustomPagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil} from '@fortawesome/free-solid-svg-icons'
+import {useCallback} from 'react';
 import { RenderStatus } from './RenderStatus';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import EditIcon from '@mui/icons-material/Edit';
@@ -52,7 +53,7 @@ const DataTableComponent = ({rows,loading,rowCount,actionRow}) => {
             </Tooltip>,
         ],
       },
-];
+    ];
 
 
     const handleFnClick = useCallback((row) => {
@@ -60,6 +61,10 @@ const DataTableComponent = ({rows,loading,rowCount,actionRow}) => {
          actionRow(row);
     }, []);
 
+
+  
+
+   
     return (
         <div style={{ height: 420, width: "100%" }}>
         <DataGrid
