@@ -14,6 +14,14 @@ export const  getVisitasList=async ()=>{
     return response
 }
 
+export const  getVisitasByDate=async (date)=>{
+    const endpoint=date?`/visitas/fecha?fecha=${date}`:'/visitas/fecha'
+    const response= await apiProductos.get(endpoint) 
+    return response
+}
+
+
+
 export const  addVisita=async (data)=>{
     const response= await apiProductos.post('/visitas', data) 
     return response

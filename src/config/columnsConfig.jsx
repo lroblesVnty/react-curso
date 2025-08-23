@@ -4,20 +4,22 @@ import { splitDateTime } from '../utils/dateUtils';
 import {GridActionsCellItem} from '@mui/x-data-grid';
 
 export const visitasColumns = (handleAction ) => [
+    //TODO se podría deshabilitar accion si la fecha actual es diferente a la fecha de la visita
 
      { field: 'id', headerName: 'Id', flex: 1,maxWidth:50,headerClassName: 'theme-header'},
         { field: 'usuario', headerName: 'Nombre Usuario',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center' },
-        { field: 'visited_at', headerName: 'Fecha Visita',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center',
-        valueGetter: (params) => {
-            const { date } = splitDateTime(params.row.visited_at);
+        { field: 'fecha_visita', headerName: 'Fecha Visita',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center',type: 'date',
+       /*  valueGetter: (params) => {
+            const { date } = splitDateTime(params.row.fecha_visita);
             return date;
-        }
+        } */
         },
-        {field: 'visita_hora',headerName: 'Hora Visita',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center',
-        valueGetter: (params) => {
+        {field: 'hora_entrada',headerName: 'Hora Entrada',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center',
+        /*valueGetter: (params) => {
             const { time } = splitDateTime(params.row.visited_at);
             return time;
-        },
+        },*/
+        },{field: 'hora_salida',headerName: 'Hora Salida',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center' 
         },
         {
         field: 'actions',

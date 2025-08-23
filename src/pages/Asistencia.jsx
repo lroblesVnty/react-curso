@@ -23,7 +23,7 @@ import DataTableComponent from "../components/DataTableComponent";
 import AddVisitaForm from "../components/AddVisitaForm";
 import { asistenciaColumns } from "../config/columnsConfig";
 
-const pages=['Miembros','Products','Blog']
+const pages=['Miembros','Visitas','Blog']
 const Asistencia = () => {
     const [loading, setLoading] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
