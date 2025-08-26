@@ -27,11 +27,20 @@ export const visitasColumns = (handleAction ) => [
         width: 80,
         getActions: (params) => [
             <Tooltip title="Cerrar Visita">
+            <span>
                 <GridActionsCellItem
                     icon={<EventAvailableIcon sx={{ color: "#050505ff" }} />}
                     label="Cerrar"
                     onClick={() => handleAction(params.row)}
+                    disabled={params.row.hora_salida?true:false}
+                    sx={{
+                    '&.Mui-disabled': {
+                        opacity: 0.5,
+                        pointerEvents: 'none', // Para que el cursor no sea de click
+                    },
+                    }}
                 />
+            </span>
             </Tooltip>,
         ],
       },

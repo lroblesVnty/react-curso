@@ -20,9 +20,12 @@ export const  getVisitasByDate=async (date)=>{
     return response
 }
 
-
-
 export const  addVisita=async (data)=>{
     const response= await apiProductos.post('/visitas', data) 
+    return response
+
+}
+export const  closeVisita=async (visita)=>{
+    const response= await apiProductos.get(`/visitas/${visita}/cerrar`) 
     return response
 }

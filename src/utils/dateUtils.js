@@ -1,16 +1,18 @@
 export const splitDateTime = (dateTime) => {
-  if (!dateTime) return { date: '', time: '' };
+    if (!dateTime) return { date: '', time: '' };
 
-  const [datePart, timePart] = dateTime.split(' ');
-  const [day, month, year] = datePart.split('/').map(Number);
-  const [hours, minutes, seconds] = timePart.split(':').map(Number);
+        // 1. Separar la fecha y la hora
+    let [date, time] = dateTime.split('T');
 
-  const dateObj = new Date(year, month - 1, day, hours, minutes, seconds);
+    // 2. Separar la fecha en sus componentes (año, mes, día)
+    const [year, month, day] = date.split('-');
 
-  const pad = (n) => n.toString().padStart(2, '0');
+    // 3. Reorganizar los componentes al formato 'dd-mm-yyyy'
+    date = `${day}-${month}-${year}`;
+   
 
-  const date = `${pad(dateObj.getDate())}/${pad(dateObj.getMonth() + 1)}/${dateObj.getFullYear()}`;
-  const time = `${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}:${pad(dateObj.getSeconds())}`;
-
-  return { date, time };
+    return {
+        fecha: date, // Por ejemplo: '24-08-2025'
+        hora: time,      // Por ejemplo: '18:53'
+    };
 };

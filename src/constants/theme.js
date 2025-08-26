@@ -19,7 +19,14 @@ const theme = createTheme({
         MuiButton: {
         styleOverrides: {
             root: {
-            textTransform: 'none', // Evita que el texto se convierta en mayúsculas
+                textTransform: 'none', // Evita que el texto se convierta en mayúsculas
+                /* '&.Mui-disabled': {
+                    color: 'lightgray', // Color del icono
+                    bgcolor:'#ff5024',
+                    cursor: 'not-allowed',
+                    // Puedes usar también el color del tema
+                    // color: ({ theme }) => theme.palette.disabledIcon,
+                }, */
             },
         },
         defaultProps: {

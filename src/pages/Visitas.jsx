@@ -13,7 +13,7 @@ import ModalComponent from "../components/Modal";
 import IconButton from '@mui/material/IconButton';
 import { Tooltip } from "@mui/material";
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
-import { getVisitasByDate,getVisitasList } from "../services/gym.service";
+import { closeVisita, getVisitasByDate,getVisitasList } from "../services/gym.service";
 import DataTableComponent from "../components/DataTableComponent";
 import AddVisitaForm from "../components/AddVisitaForm";
 import {visitasColumns} from "../config/columnsConfig";
@@ -68,15 +68,78 @@ const Visitas = () => {
         console.log('visita agregada exitosamente, cerrando modal...');
         handleCloseModal(); // Cierra el modal
         // Opcional: Si quieres recargar la lista de miembros después de agregar uno
-        getHistorialVisitas(); // Llama a tu función para obtener los miembros actualizados
+        if(checked){
+            getVisitasActual();
+        }else{
+            getHistorialVisitas(); // Llama a tu función para obtener los miembros actualizados
+
+        }
     };
 
 
-    const handleColAction=(row)=>{
+    const handleColAction=async (row)=>{
         console.log('Acción de columna realizada en la fila:', row);
+        Swal.fire({
+        title: "Deseas cerrar la visita?",
+       // text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar"
+        }).then((result) => {
+        if (result.isConfirmed) {
+            handleCloseVisita(row.id)
+        }
+        });
+       
     }
 
-    const columns = useMemo(() => visitasColumns(handleColAction ), [handleColAction]);
+    const handleCloseVisita = async (row) => {
+        setLoading(true);
+        try {
+            const resp = await closeVisita(row);
+            console.log(resp);
+            setLoading(false);
+            if (resp.status == 200) {
+                if (resp.data) {
+                    Swal.fire({
+                        title: "Cerrada!",
+                        text: "La visita ha sido cerrada.",
+                        icon: "success"
+                    });
+                    if (checked) {
+                        getVisitasActual();
+                    } else {
+                        getHistorialVisitas(); // Llama a tu función para obtener los miembros actualizados
+                    }
+                }
+            }
+
+
+        } catch (error) {
+            console.log(error);
+            if (error.response && error.response.status == 409) {
+                Swal.fire({
+                    title: "Error",
+                    text: "La visita ya ha sido cerrada anteriormente.",
+                    icon: "error"
+                });
+            }else{
+                Swal.fire({
+                    position: 'top',
+                    icon: 'error',
+                    title: error.message,
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                });
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const columns = useMemo(() => visitasColumns(handleColAction), [handleColAction]);
 
 
 
@@ -135,6 +198,10 @@ const Visitas = () => {
                     showConfirmButton: true,
                     allowOutsideClick:false,
                 });
+            }
+            if (error.response && error.response.status == 404) {
+                setRows([])
+                setRowCount(0)
             }
             
            

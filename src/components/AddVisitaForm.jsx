@@ -8,6 +8,7 @@ import { LoadingButton } from "@mui/lab";
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import styles from '../styles/PagoFormStyles.css'
 import { formatDateTimeLocal } from "../utils/formateDateTimeLocal";
+import { splitDateTime } from "../utils/dateUtils";
 
 const AddVisitaForm = ({openModal,onUserAdded}) => {
     const {register,handleSubmit,formState: { errors,isSubmitted,isSubmitSuccessful,isDirty},reset, clearErrors,setError
@@ -16,13 +17,17 @@ const AddVisitaForm = ({openModal,onUserAdded}) => {
 
      const onSubmit = async (data) => {
         console.log(data);
-        const fechaFormateada = formatDateTimeLocal(data.visited_at);
+        //const fechaFormateada = formatDateTimeLocal(data.visited_at);
         //console.log('Fecha formateada:', fechaFormateada);
+        const {fecha, hora} = splitDateTime(data.visited_at);
+        
         const payload = {
             ...data,
-            visited_at: fechaFormateada,
+            fecha_visita: fecha,
+            hora_entrada: hora+':00' // Agregar segundos como ':00'
         };
-        console.log(payload)
+        //console.log(payload);
+       
         setIsLoading(true);
         try {
             const response = await addVisita(payload);

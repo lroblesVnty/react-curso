@@ -1,6 +1,6 @@
  const esESGrid= {
     // Root
-    noRowsLabel: 'Sin filas',
+    noRowsLabel: 'No hay datos para mostrar',
      noResultsOverlayLabel: 'No se encontraron resultados',
     errorOverlayDefaultLabel: 'Ha ocurrido un error.',
   
