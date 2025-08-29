@@ -29,3 +29,8 @@ export const  closeVisita=async (visita)=>{
     const response= await apiProductos.get(`/visitas/${visita}/cerrar`) 
     return response
 }
+
+export const  getAsistenciaList=async ()=>{
+    const response= await apiProductos.get('/asistencia') 
+    return response
+}

@@ -18,10 +18,11 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import IconButton from '@mui/material/IconButton';
 import { Tooltip } from "@mui/material";
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
-import { getVisitasList } from "../services/gym.service";
+import { getAsistenciaList } from "../services/gym.service";
 import DataTableComponent from "../components/DataTableComponent";
 import AddVisitaForm from "../components/AddVisitaForm";
 import { asistenciaColumns } from "../config/columnsConfig";
+import QrScanner from "./QrScanner";
 
 const pages=['Miembros','Visitas','Blog']
 const Asistencia = () => {
@@ -33,7 +34,7 @@ const Asistencia = () => {
 
     useEffect(() => {
         (async()=>{
-            getVisitas()
+            getAsistencia()
         })();
        
     },[]);//arreglo vacio para que no itere varias veces
@@ -59,10 +60,10 @@ const Asistencia = () => {
     }
     const columns = useMemo(() => asistenciaColumns(handleColAction ), [handleColAction]);
 
-     const getVisitas=async ()=>{
+     const getAsistencia=async ()=>{
                 setLoading(true)
                 try {
-                    const resp= await getVisitasList()
+                    const resp= await getAsistenciaList()
                     console.log(resp)
                     setLoading(false)
                     if (resp.status==200) {
@@ -98,7 +99,7 @@ const Asistencia = () => {
                         <CardForm title="Asistencia" colSize="10">
                             <div className="row mb-3 justify-content-end">
                                 <div className="col align-items-end text-end col-auto">
-                            { //TODO crear formulario para registrar una visita y listar las vistas
+                            { //TODO en modal ver si se puede colocar el scaner y conese registrar la visita o simular abiri el scaner
 
                             }
                                     <Tooltip title="Registrar Asistencia">
@@ -111,9 +112,11 @@ const Asistencia = () => {
                                             open={modalOpen}
                                             handleClose={handleCloseModal}
                                         >
-                                            <AddVisitaForm onUserAdded={handleUserAddedSuccessfully} openModal={setModalOpen} />
-                                                <button onClick={handleCloseModal}>Cancelar</button>
-                                            
+                                        /*//TODO llamar a un componente en el cual se llame al scaner y despues de escanear se registre la asistencia y te muestre los datos del miembro(cuando vence su suscripcion) */
+                                            <QrScanner
+                                                //onScan={handleUserAddedSuccessfully}
+                                               // onClose={handleCloseModal}
+                                            />
                                         </ModalComponent>
                                     )}
                                 </div>
