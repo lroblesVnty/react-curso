@@ -2,13 +2,13 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import React, { useEffect } from 'react';
 
-const ModalComponent = ({open,handleClose,children}) => {
+const ModalComponent = ({open,handleClose,children,width=550}) => {
     const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 550,
+  width: width,
   bgcolor: 'background.paper',
    border: '2px solid #000',
   boxShadow: 24,

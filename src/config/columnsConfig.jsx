@@ -71,7 +71,7 @@ export const asistenciaColumns = (handleAction ) => [
     getActions: (params) => [
         <Tooltip title="Cerrar asistencia">
             <GridActionsCellItem
-                icon={<EventAvailableIcon sx={{ color: "#090909ff" }} />}
+                icon={<EventAvailableIcon sx={{ color: "#090909ff", }} />}
                 label="Cerrar"
                 disabled={params.row.hora_salida?true:false}
                 onClick={() => handleAction(params.row)}
@@ -79,7 +79,7 @@ export const asistenciaColumns = (handleAction ) => [
                     '&.Mui-disabled': {
                         opacity: 0.5,
                         pointerEvents: 'none', // Para que el cursor no sea de click
-                },
+                    },
                 }}
                 
             />

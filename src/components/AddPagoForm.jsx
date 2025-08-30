@@ -11,7 +11,7 @@ import { getResponseError } from "../models/errorUtils";
 import { applyBackendErrors } from "../utils/formErrors";
 import styles from '../styles/PagoFormStyles.css'
 
-const AddPagoForm = ({miembroData,openModal}) => {
+const AddPagoForm = ({miembroData,openModal,onPagoAdd}) => {
      const [defaultValues, setDefaultValues] = useState({miembro:miembroData.nombre+' '+miembroData.apellido,plan:'',monto:'',metodoPago:'',fechaPago:''});
      const {register,handleSubmit,formState: { errors,isSubmitted,isSubmitSuccessful,isDirty},reset, clearErrors,setError
     } = useForm();
@@ -62,7 +62,11 @@ const AddPagoForm = ({miembroData,openModal}) => {
                     timer: 1500 // El mensaje se cerrará automáticamente después de 1.5 segundos
                  });
                 reset();
+                if (onPagoAdd) {
+                    onPagoAdd();
+                }
                 openModal(false);
+
             }
         } catch (error) {
             console.log(error);

@@ -101,6 +101,12 @@ const Miembros = () => {
         getMiembros(); // Llama a tu función para obtener los miembros actualizados
     };
 
+    const handlePagoAddedSuccessfully = () => {
+        console.log('Pago agregado exitosamente, cerrando modal...');
+       // handleCloseModalPago(); // Cierra el modal
+        getMiembros(); // Llama a tu función para obtener los miembros actualizados
+    };
+
     const getMiembros=async ()=>{
         setLoading(true)
         try {
@@ -171,7 +177,7 @@ const Miembros = () => {
                                     open={modalPagoOpen}
                                     handleClose={handleCloseModalPago}
                                 >
-                                    <AddPagoForm miembroData={dataPago} openModal={setModalPagoOpen} />
+                                    <AddPagoForm miembroData={dataPago} openModal={setModalPagoOpen} onPagoAdd={handlePagoAddedSuccessfully} />
                                         <Button variant="outlined" onClick={handleCloseModalPago}>
                                             Cerrar
                                         </Button>

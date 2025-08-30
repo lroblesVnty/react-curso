@@ -16,3 +16,19 @@ export const splitDateTime = (dateTime) => {
         hora: time,      // Por ejemplo: '18:53'
     };
 };
+
+
+export const isThreeDaysBefore = (targetDateStr) => {
+    const today = new Date();
+    const targetDate = new Date(targetDateStr);
+
+    // Normalizamos fechas sin horas
+    today.setHours(0, 0, 0, 0);
+    targetDate.setHours(0, 0, 0, 0);
+
+    const diffInMs = targetDate - today;
+    const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+    return diffInDays === 3;
+};
+

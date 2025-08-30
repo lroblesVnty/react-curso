@@ -23,6 +23,8 @@ import DataTableComponent from "../components/DataTableComponent";
 import AddVisitaForm from "../components/AddVisitaForm";
 import { asistenciaColumns } from "../config/columnsConfig";
 import QrScanner from "./QrScanner";
+import ScannerComponent from "../components/ScannerComponent";
+import MiembroStatus from "./MiembroStatus";
 
 const pages=['Miembros','Visitas','Blog']
 const Asistencia = () => {
@@ -31,6 +33,11 @@ const Asistencia = () => {
     const [rowCount, setRowCount] = useState(0);
     const [rows, setRows] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+    const [scannerActive, setScannerActive] = useState(false);
+    const [showNextComponent, setShowNextComponent] = useState(false);
+    const [scannedData, setScannedData] = useState(null); // Estado para almacenar los datos escaneados
+
+
 
     useEffect(() => {
         (async()=>{
@@ -42,16 +49,23 @@ const Asistencia = () => {
     const handleOpenModal = () => {
         setIsEdit(false);
         setModalOpen(true);
+        setScannerActive(true);
     };
     const handleCloseModal = () => {
         setModalOpen(false);
+        setScannerActive(false);
     };
 
-    const handleUserAddedSuccessfully = () => {
-        console.log('visita agregada exitosamente, cerrando modal...');
-        handleCloseModal(); // Cierra el modal
+    const handleScannSuccessfully = (data) => {
+        setScannerActive(false); 
+        setShowNextComponent(true);
+        console.log('Datos del miembro escaneado:', data);
+        setScannedData(data); // Guarda los datos escaneados en el estado
+        //TODO llamar al servicio que registra la asistencia y en backend hacer la validacion de que si no está activo mande error
+
+        //handleCloseModal(); // Cierra el modal
         // Opcional: Si quieres recargar la lista de miembros después de agregar uno
-        getVisitas(); // Llama a tu función para obtener los miembros actualizados
+        //getVisitas(); // Llama a tu función para obtener los miembros actualizados
     };
 
 
@@ -111,12 +125,23 @@ const Asistencia = () => {
                                         <ModalComponent 
                                             open={modalOpen}
                                             handleClose={handleCloseModal}
+                                            width={600}
                                         >
-                                        /*//TODO llamar a un componente en el cual se llame al scaner y despues de escanear se registre la asistencia y te muestre los datos del miembro(cuando vence su suscripcion) */
-                                            <QrScanner
-                                                //onScan={handleUserAddedSuccessfully}
-                                               // onClose={handleCloseModal}
-                                            />
+                                        {//TODO llamar a un componente en el cual se llame al scaner y despues de escanear se registre la asistencia y te muestre los datos del miembro(cuando vence su suscripcion) */
+                                        }
+                                            {scannerActive && (
+                                                <ScannerComponent
+                                                onScann={handleScannSuccessfully}
+                                                />
+                                            )}
+                                            {showNextComponent && (
+                                                <MiembroStatus miembroId={scannedData.id} nombre={scannedData.nombre} />
+                                            )}
+                                            <div className="row mt-4">
+                                                <div className="col d-flex justify-content-end align-items-end">
+                                                    <Button variant="contained" sx={{ bgcolor:'primary.light' }} onClick={handleCloseModal}>Cerrar</Button>
+                                                </div>
+                                            </div>
                                         </ModalComponent>
                                     )}
                                 </div>
