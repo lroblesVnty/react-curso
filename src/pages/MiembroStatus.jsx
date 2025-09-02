@@ -5,11 +5,12 @@ import { Alert, Typography } from '@mui/material';
 import { set } from 'react-hook-form';
 import { isThreeDaysBefore } from '../utils/dateUtils';
 
-const MiembroStatus = ({miembroId,nombre}) => {
+const MiembroStatus = ({miembroId,nombre,isRegisterError}) => {
    // const {id: miembroId}=useParams()
     const [isActive, setIsActive] = useState(false)
     const [expirationDate, setExpirationDate] = useState(null)
     const [isExpired, setIsExpired] = useState(false)
+    //TODO VERIFICAR QUE LA FUNCION isThreeDaysBefore FUNCIONE CORRECTAMENTE y que sea igual o menor que 3 dias
 
     useEffect(() => {
         loadStatus(); // Llamamos a nuestra función
@@ -30,7 +31,9 @@ const MiembroStatus = ({miembroId,nombre}) => {
             console.log(resp.data.isActive)
             console.log(resp.data.expirationDate)
             setIsActive(resp.data.isActive)
-            setExpirationDate(resp.data.expirationDate.split(" ")[0])
+            if (resp.data.expirationDate) {
+                setExpirationDate(resp.data.expirationDate.split(" ")[0])
+            }
 
         } catch (error) {
             console.log(error)
@@ -42,9 +45,16 @@ const MiembroStatus = ({miembroId,nombre}) => {
         <div>
             <div className="row mb-4">
                 {/* <div className="col fs-2 text-center text-success">Asistencia Registrada!</div> */}
-                <Alert severity="success"  sx={{justifyContent: 'center',textAlign: 'center',alignItems: 'center',}}>
-                    Asistencia Registrada!
-                </Alert>
+                {!isActive && isRegisterError?
+                        <Alert severity="error"  sx={{justifyContent: 'center',textAlign: 'center',alignItems: 'center',}}>
+                            El plan del miembro ha vencido. No se puede registrar asistencia.
+                        </Alert>
+                    :
+                    <Alert severity="success"  sx={{justifyContent: 'center',textAlign: 'center',alignItems: 'center',}}>
+                        Asistencia Registrada!
+                    </Alert>
+                }
+                
             </div>
             <div className="row mb-4">
                 <div className="col">

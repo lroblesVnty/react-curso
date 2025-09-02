@@ -18,13 +18,14 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import IconButton from '@mui/material/IconButton';
 import { Tooltip } from "@mui/material";
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
-import { getAsistenciaList } from "../services/gym.service";
+import { getAsistenciaList, registerAsistencia } from "../services/gym.service";
 import DataTableComponent from "../components/DataTableComponent";
 import AddVisitaForm from "../components/AddVisitaForm";
 import { asistenciaColumns } from "../config/columnsConfig";
 import QrScanner from "./QrScanner";
 import ScannerComponent from "../components/ScannerComponent";
 import MiembroStatus from "./MiembroStatus";
+import { getCurrentDateTime } from "../utils/dateUtils";
 
 const pages=['Miembros','Visitas','Blog']
 const Asistencia = () => {
@@ -36,6 +37,7 @@ const Asistencia = () => {
     const [scannerActive, setScannerActive] = useState(false);
     const [showNextComponent, setShowNextComponent] = useState(false);
     const [scannedData, setScannedData] = useState(null); // Estado para almacenar los datos escaneados
+    const [isRegisterError, setIsRegisterError] = useState(false);
 
 
 
@@ -56,12 +58,52 @@ const Asistencia = () => {
         setScannerActive(false);
     };
 
-    const handleScannSuccessfully = (data) => {
+    const handleScannSuccessfully =async (data) => {
+        //TODO borrar los buttonsActions del datagrid, y para cerrar la visita usar el mismo boton que para registrar, es decir si ya hay hora de registro que se registre la hora de salida
         setScannerActive(false); 
         setShowNextComponent(true);
         console.log('Datos del miembro escaneado:', data);
         setScannedData(data); // Guarda los datos escaneados en el estado
-        //TODO llamar al servicio que registra la asistencia y en backend hacer la validacion de que si no está activo mande error
+        setLoading(true)
+        const { fecha, hora } = getCurrentDateTime();
+        const payload = {
+            fecha,
+            hora_entrada: hora,
+            miembro_id: data.id,
+            notas: null
+        }
+        console.log(payload)
+        try {
+            const response = await registerAsistencia(payload);
+            if (response.status === 200) {
+                //setModalOpen(true);
+                Swal.fire({
+                    position: 'top',
+                    icon: 'success',
+                    title: 'Asistencia registrada con éxito',
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                });
+                getAsistencia()
+            }
+        } catch (error) {
+            console.log(error)
+            if (error.response.status==409 && error.response.data.error) {
+                setIsRegisterError(true);
+            }else{
+
+                Swal.fire({
+                    position: 'top',
+                    icon: 'error',
+                    title: error.message,
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                });
+            }
+        }
+        finally{
+            setLoading(false)
+        }
 
         //handleCloseModal(); // Cierra el modal
         // Opcional: Si quieres recargar la lista de miembros después de agregar uno
@@ -135,7 +177,7 @@ const Asistencia = () => {
                                                 />
                                             )}
                                             {showNextComponent && (
-                                                <MiembroStatus miembroId={scannedData.id} nombre={scannedData.nombre} />
+                                                <MiembroStatus miembroId={scannedData.id} nombre={scannedData.nombre} isRegisterError={isRegisterError} />
                                             )}
                                             <div className="row mt-4">
                                                 <div className="col d-flex justify-content-end align-items-end">

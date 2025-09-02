@@ -32,3 +32,12 @@ export const isThreeDaysBefore = (targetDateStr) => {
     return diffInDays === 3;
 };
 
+export const getCurrentDateTime = () => {
+    const now = new Date();
+    const date = new Intl.DateTimeFormat('en-GB').format(now).replace(/\//g, '-'); // Formato: dd-mm-yyyy
+    const time = now.toLocaleTimeString('en-GB'); // Formato: hh:mm
+    return {
+        fecha: date, // Por ejemplo: '24-08-2025'
+        hora: time,      // Por ejemplo: '18:53:00'
+    };
+}

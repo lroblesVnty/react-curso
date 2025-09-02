@@ -34,3 +34,8 @@ export const  getAsistenciaList=async ()=>{
     const response= await apiProductos.get('/asistencia') 
     return response
 }
+
+export const  registerAsistencia=async (data)=>{
+    const response= await apiProductos.post('/asistencia', data) 
+    return response
+}
