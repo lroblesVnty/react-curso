@@ -39,3 +39,13 @@ export const  registerAsistencia=async (data)=>{
     const response= await apiProductos.post('/asistencia', data) 
     return response
 }
+
+export const  getAsistenciaByMiembro=async (miembroId)=>{
+    const response= await apiProductos.get(`/asistencia/miembro/${miembroId}/hoy`) 
+    return response
+}
+
+export const  closeAsistencia=async (visita)=>{
+    const response= await apiProductos.get(`/asistencia/${visita}/cerrar`) 
+    return response
+}

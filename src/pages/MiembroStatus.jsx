@@ -17,9 +17,11 @@ const MiembroStatus = ({miembroId,nombre,isRegisterError}) => {
     }, []); // El array vacío asegura que se ejecute solo al inicio
 
     useEffect(() => {
-        console.log('first render or expirationDate changed:', expirationDate);
-        if (isThreeDaysBefore(expirationDate)) {
-           setIsExpired(true);
+        if(expirationDate){
+            console.log('first render or expirationDate changed:', expirationDate);
+            if (isThreeDaysBefore(expirationDate)) {
+               setIsExpired(true);
+            }
         }
     }, [expirationDate]);
 

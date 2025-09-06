@@ -20,7 +20,8 @@ export const splitDateTime = (dateTime) => {
 
 export const isThreeDaysBefore = (targetDateStr) => {
     const today = new Date();
-    const targetDate = new Date(targetDateStr);
+    const [dia, mes, anio] = targetDateStr.split('/');
+    const targetDate = new Date(`${mes}-${dia}-${anio}`); 
 
     // Normalizamos fechas sin horas
     today.setHours(0, 0, 0, 0);
@@ -28,8 +29,9 @@ export const isThreeDaysBefore = (targetDateStr) => {
 
     const diffInMs = targetDate - today;
     const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+    console.log({diffInDays})
 
-    return diffInDays === 3;
+    return diffInDays <= 3;
 };
 
 export const getCurrentDateTime = () => {

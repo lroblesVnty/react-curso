@@ -64,7 +64,7 @@ export const asistenciaColumns = (handleAction ) => [
         },*/
     },
     { field: 'hora_salida', headerName: 'Hora Salida',flex: 1,headerClassName: 'theme-header',headerAlign: 'center',align:'center' },
-    {
+    /*{
     field: 'actions',
     type: 'actions',
     width: 80,
@@ -85,6 +85,6 @@ export const asistenciaColumns = (handleAction ) => [
             />
         </Tooltip>,
     ],
-    },
+    },*/
 
 ]
