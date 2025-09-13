@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
-import {useAuth} from '../context/authContext';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus,faClipboardList, faRightFromBracket } from '@fortawesome/free-solid-svg-icons'
 import CardMenu from '../components/CardMenu';
+import { useContext } from 'react';
+import { AuthContext } from '../context/authContext';
 
 
 const iconAdd=<FontAwesomeIcon icon={faPlus} size="5x" className='prueba' />
@@ -22,8 +24,23 @@ const cards=[
         to:'consultar'    }
 ]
 function Menu() {
-    const {userActive,logout}=useAuth()
-    console.log({userActive})
+    //const {userActive,logout}=useAuth()
+    const {logout,user} = useContext(AuthContext);
+
+    console.log({user})
+
+    const handleLogout = async () => {
+     
+      const result = await logout();
+      //console.log({result})
+      if (result?.success === false) {
+        console.error('Error al cerrar sesión:', result?.error);
+        // Aquí podrías mostrar un mensaje de error al usuario
+      } else {
+        // Redirigir al usuario a la página de inicio de sesión o a donde sea necesario
+        navigate('/login');
+      }
+    };
    
     return (
         
@@ -49,7 +66,7 @@ function Menu() {
                 ))}
                 
                 <div className="col-lg-4">
-                    <div className="card text-center text-bg-dark card-menu" onClick={logout}>
+                    <div className="card text-center text-bg-dark card-menu" onClick={handleLogout}>
                         <div className="card-body">
                             
                             <FontAwesomeIcon icon={faRightFromBracket} size="5x" className='prueba' />

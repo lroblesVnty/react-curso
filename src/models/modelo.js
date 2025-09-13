@@ -160,6 +160,17 @@ export const  getUserProfile=async (token)=>{
     const response= await apiProductos.get('/user-profile',{ headers: {"Authorization" : `Bearer ${token}`} }) 
     return response
 }
+
+export const  setLogout=async (token)=>{
+    const response= await apiProductos.get('/logout',{ 
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+    }) 
+    return response
+}
+
+
 export const  saveVenta=async (data)=>{
     const response= await apiProductos.post('/ventas',data) 
     return response

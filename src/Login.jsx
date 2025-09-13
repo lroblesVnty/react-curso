@@ -1,7 +1,7 @@
 import Images from './assets/imagenes';
-import  {useState } from 'react';
+import  {useState,useContext } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
-import {useAuth} from './context/authContext'
+import {AuthContext} from './context/authContext'
 import estilos from './styles/login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLock, faSignInAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -10,7 +10,8 @@ import Swal from 'sweetalert2'
 
 function Login() {
     const location=useLocation()
-    const { userActive,login,setUserActive} = useAuth();
+    //const { userActive,login,setUserActive} = useAuth();
+    const {login} = useContext(AuthContext);
    
     const [user,setUser]=useState({
         email:"",
@@ -29,12 +30,12 @@ function Login() {
         try {
             const resp=await login(user)
             console.log({resp})
-            if (resp.status==200) {
+            if (resp.success) {
                 console.info('todo ok')   
-                window.localStorage.setItem("userActive",resp.data.access_token)
+                /*window.localStorage.setItem("userActive",resp.data.access_token)
                 window.localStorage.setItem("userId",resp.data.data.id)
-                setUserActive( window.localStorage.getItem("userActive"))
-                console.log({userActive});
+                setUserActive( window.localStorage.getItem("userActive"))*/
+                //console.log({userActive});
                 //if (location.state?.from) {// if location.state  null accede a la porpiedad FROM
                     //navigate(location.state.from);
                     

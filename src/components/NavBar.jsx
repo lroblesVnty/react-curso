@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,7 +15,7 @@ import { faBars,faHouse,faRightFromBracket } from '@fortawesome/free-solid-svg-i
 import {Link } from 'react-router-dom';
 
 import { Tooltip } from '@mui/material';
-import {useAuth} from '../context/authContext';
+import {AuthContext} from '../context/authContext';
 //const pages = ['Products', 'Pricing', 'Blog'];
 
 const darkTheme = createTheme({
@@ -51,7 +51,20 @@ const NavBar = ({pages}) => {
     const handleCloseUserMenu = () => {
       setAnchorElUser(null);
     };
-    const {logout}=useAuth()
+    const {logout,user} = useContext(AuthContext);
+
+    const handleLogout = async () => {
+     
+      const result = await logout();
+      //console.log({result})
+      if (result?.success === false) {
+        console.error('Error al cerrar sesión:', result?.error);
+        // Aquí podrías mostrar un mensaje de error al usuario
+      } else {
+        // Redirigir al usuario a la página de inicio de sesión o a donde sea necesario
+        navigate('/login');
+      }
+    };
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -162,7 +175,7 @@ const NavBar = ({pages}) => {
                                     aria-label="logout"
                                     aria-controls="menu-appbar"
                                     aria-haspopup="true"
-                                    onClick={logout}
+                                    onClick={handleLogout}
                                     //color="scondary.main"
                                 >
                                     <FontAwesomeIcon icon={faRightFromBracket} /> 

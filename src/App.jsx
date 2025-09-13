@@ -27,12 +27,13 @@ import Home from "./pages/Home";
 import MiembroStatus from "./pages/MiembroStatus";
 import Visitas from "./pages/Visitas";
 import Asistencia from "./pages/Asistencia"
+import UnauthorizedPage from "./pages/UnauthorizedPage";
 function App() {
 
     return (
-        <AuthProvaider>
+        
             <Routes>
-                <Route exact path="/"  element={<Login />} />
+                <Route exact path="/login"  element={<Login />} />
                 <Route exact path="/menu" element={
                     <ProtectedRoute redirectTo="/">
                         <Menu />
@@ -113,7 +114,10 @@ function App() {
                     <Files/>                    
                 } />
                 <Route path="/miembros" element={
-                    <Miembros/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <Miembros/>
+                    </ProtectedRoute>
+                    
                 } />
                 <Route path="/plan" element={
                     <Planes/>                    
@@ -133,11 +137,15 @@ function App() {
                 <Route path="/asistencia" element={
                     <Asistencia/>                    
                 } />
+                <Route path="/unauthorized" element={
+                    <UnauthorizedPage/>                    
+                } />
+
+
 
                  <Route path="*" element={<NotFoundPage/>} />
                 
             </Routes>
-        </AuthProvaider>
     );
 }
 
