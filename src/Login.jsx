@@ -9,6 +9,7 @@ import Swal from 'sweetalert2'
 
 
 function Login() {
+    console.log('[ENV] API_URL:', import.meta.env.VITE_API_URL);
     const location=useLocation()
     //const { userActive,login,setUserActive} = useAuth();
     const {login} = useContext(AuthContext);
