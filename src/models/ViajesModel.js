@@ -1,7 +1,7 @@
 const API='http://localhost/apiViajes/';
 import axios from 'axios'
 
-export default async  function getEdos(){
+export  async  function getEdos(){
     const response=await fetch(API+'estados')
     .then(res=>res.json())
     .catch(error => {
