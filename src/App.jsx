@@ -34,7 +34,7 @@ function App() {
         
             <Routes>
                 <Route exact path="/login"  element={<Login />} />
-                <Route exact path="/menu" element={
+                <Route exact path="/" element={
                     <ProtectedRoute redirectTo="/">
                         <Menu />
                     </ProtectedRoute>

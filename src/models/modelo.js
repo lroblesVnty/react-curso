@@ -2,11 +2,11 @@ const API='http://localhost/webServices/api-crud';
 const TOKEN='0c111e14-f68f-43b9-b6b2-4eabff25a8ac';
 import axios from 'axios'
 import Swal from 'sweetalert2'
-//const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 const apiProductos = axios.create({
-    baseURL: 'http://localhost/api-laravel/public/api'
+    //baseURL: 'http://localhost/api-laravel/public/api'
     //baseURL:'http://127.0.0.1:8000/api'
-    // baseURL: API_URL
+    baseURL: API_URL
 });
 
 export default async  function guardar(data){

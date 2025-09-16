@@ -75,7 +75,7 @@ const NavBar = ({pages}) => {
                         <Typography
                             variant="h6"
                             noWrap
-                            component={Link} to={"/menu"}
+                            component={Link} to={"/"}
                             sx={{
                                 mr: 2,
                                 display: { xs: 'none', md: 'flex' },

@@ -42,7 +42,7 @@ function Login() {
                 //}else{
                  //   navigate("/menu");
                 //}*/
-                navigate("/menu");
+                navigate("/");
                 console.info('login correcto')
             }else if (resp.response) {
                 Swal.fire({
