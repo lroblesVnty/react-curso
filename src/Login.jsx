@@ -108,11 +108,11 @@ function Login() {
     
     return(
         <div className="container-fluid mt-4">
-            <div className="row align-items-center justify-content-center" >
-                <div className="col-lg-4 text-start justify-content-start">
+            <div className="row align-items-center justify-content-center mb-4" >
+                <div className="col-lg-4 col-sm-4 col-md-6 text-start justify-content-center text-center">
                     <img src={Images.crashBash} className="img-fluid" alt="..." />
                 </div>
-                <div className='col-lg-4'>
+                <div className='col-lg-4 col-sm-10 col-md-6'>
                     <div className="card shadow-lg p-3 text-bg-dark" >
                         <div className="card-body">
                             {/* <h5 className="card-title">Card title</h5> */}
