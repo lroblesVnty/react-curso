@@ -33,7 +33,7 @@ function App() {
     return (
         
             <Routes>
-                <Route exact path="/login"  element={<Login />} />
+                 <Route exact path="/login"  element={<Login />} />
                 <Route exact path="/" element={
                     <ProtectedRoute redirectTo="/">
                         <Menu />
@@ -56,8 +56,9 @@ function App() {
                         <Editar/>
                     </ProtectedRoute> */}
                 <Route path="/editar/:userId" element={
-                     <Editar/>                   
-                    
+                    <ProtectedRoute redirectTo="/">
+                        <Editar/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/agregar" element={
                     <ProtectedRoute redirectTo="/">
@@ -93,25 +94,39 @@ function App() {
                 } />
                 
                 <Route path="/viajes" element={
-                    <Viajes/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <Miembros/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/obtenerBoletos" element={
-                    <ObtenerBoletos/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <ObtenerBoletos/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/venta" element={
-                    <Venta/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <Venta/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/venta/:id" element={
-                    <DetalleVenta/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <DetalleVenta/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/ventas" element={
-                    <Sales/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <Sales/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/equipos" element={
-                    <Equipos/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <Equipos/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/file" element={
-                    <Files/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <Files/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/miembros" element={
                     <ProtectedRoute redirectTo="/unauthorized">
@@ -120,26 +135,39 @@ function App() {
                     
                 } />
                 <Route path="/plan" element={
-                    <Planes/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <Planes/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/scanner" element={
-                    <QrScanner/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <QrScanner/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/home" element={
-                    <Home/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <Home/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/miembro/status/:id" element={
-                    <MiembroStatus/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <MiembroStatus/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/visitas" element={
-                    <Visitas/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <Visitas/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/asistencia" element={
-                    <Asistencia/>                    
+                    <ProtectedRoute redirectTo="/unauthorized">
+                        <Asistencia/>
+                    </ProtectedRoute>
                 } />
                 <Route path="/unauthorized" element={
                     <UnauthorizedPage/>                    
                 } />
+
 
 
 
