@@ -5,7 +5,8 @@ import Swal from 'sweetalert2'
 
 const apiProductos = axios.create({
     //baseURL: 'http://localhost/api-laravel/public/api'
-    baseURL:'http://127.0.0.1:8000/api'
+    //baseURL:'http://127.0.0.1:8000/api'
+     baseURL:'https://laravel-production-424f.up.railway.app/api'
 });
 
 export default async  function guardar(data){
