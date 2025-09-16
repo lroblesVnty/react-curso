@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import getEdos, { getViajes ,buscarViajes} from "../models/viajesModel";
+import getEdos, { getViajes} from "../models/viajesModel";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import {  styled } from '@mui/material/styles';
