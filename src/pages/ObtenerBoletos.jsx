@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {useLocation} from 'react-router-dom';
-import { selectBoletos } from '../models/viajesModel';
+import { selectBoletos } from '../models/ViajesModel';
 import Images from '../assets/imagenes'
 import estilos from '../styles/obtenerBoletos.module.css'
 import Button from '@mui/material/Button';
