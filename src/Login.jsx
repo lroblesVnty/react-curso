@@ -9,7 +9,7 @@ import Swal from 'sweetalert2'
 
 
 function Login() {
-    console.log('[ENV] API_URL:', import.meta.env.VITE_API_URL);
+    //console.log('[ENV] API_URL:', import.meta.env.VITE_API_URL);
     const location=useLocation()
     //const { userActive,login,setUserActive} = useAuth();
     const {login} = useContext(AuthContext);
@@ -45,11 +45,11 @@ function Login() {
                 //}*/
                 navigate("/");
                 console.info('login correcto')
-            }else if (resp.response) {
+            }else {
                 Swal.fire({
                     position: 'top',
                     icon: 'warning',
-                    title:resp.response.data.msg,
+                    title:resp.error.msg,
                     showConfirmButton: true,
                     allowOutsideClick:false,
                 });
@@ -108,9 +108,9 @@ function Login() {
    
     
     return(
-        <div className="container-fluid mt-4">
-            <div className="row align-items-center justify-content-center mb-4" >
-                <div className="col-lg-4 col-sm-4 col-md-6 text-start justify-content-center text-center">
+        <div className="container-fluid min-vh-100 d-flex justify-content-center align-items-center py-5">
+            <div className="row align-items-center justify-content-center mb-4 mt-4 w-100" >
+                <div className="col-lg-4 col-sm-4 col-md-6 text-start justify-content-center text-center mb-3">
                     <img src={Images.crashBash} className="img-fluid" alt="..." />
                 </div>
                 <div className='col-lg-4 col-sm-10 col-md-6'>
@@ -119,7 +119,7 @@ function Login() {
                             {/* <h5 className="card-title">Card title</h5> */}
                             <form  onSubmit={handleSubmit}>
                                 <div className="input-group mt-5" >
-                                     <span className={"input-group-text  border-left-0 "+estilos.spanEstilo}>
+                                        <span className={"input-group-text  border-left-0 "+estilos.spanEstilo}>
                                         <FontAwesomeIcon icon={faUserCircle} size="2x" className={estilos.iconStyle}/>
                                     </span>
                                     <input type="text" className={"form-control "+estilos.inputStyle} id={estilos.username} name="email"  placeholder="Usuario" onChange={handleChange}  autoCapitalize="off" maxLength="30"/>
@@ -135,16 +135,16 @@ function Login() {
                                         <FontAwesomeIcon icon={faSignInAlt}  className={estilos.iconStyle}/>
                                         &nbsp;Entrar
                                     </button>
-                                
+            
                                 </div>
                                 {
                                     error &&
                                     <div className="alert alert-danger text-center" role="alert">
                                         {error}
-                                    </div>  
-                                    
+                                    </div>
+            
                                 }
-                                
+            
                             </form>
             
                         </div>
