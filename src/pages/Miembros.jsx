@@ -144,7 +144,7 @@ const Miembros = () => {
        <div className="container mt-4">
         <div className="row justify-content-center align-items-center">
             <div className="col">
-                <CardForm title="Miembros" colSize="10">
+                <CardForm title="Miembros" colSize="11">
                     <div className="row mb-3 justify-content-end">
                         <div className="col align-items-end text-end col-auto">
                             <Tooltip title="Registrar Visita">

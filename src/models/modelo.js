@@ -2,9 +2,10 @@ const API='http://localhost/webServices/api-crud';
 const TOKEN='0c111e14-f68f-43b9-b6b2-4eabff25a8ac';
 import axios from 'axios'
 import Swal from 'sweetalert2'
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
+
+
 console.log(API_URL);
-//const API_URL = 'http://127.0.0.1:8000/api';
 const apiProductos = axios.create({
     //baseURL: 'http://localhost/api-laravel/public/api'
     //baseURL:'http://127.0.0.1:8000/api'
