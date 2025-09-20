@@ -2,7 +2,8 @@ const API='http://localhost/webServices/api-crud';
 const TOKEN='0c111e14-f68f-43b9-b6b2-4eabff25a8ac';
 import axios from 'axios'
 import Swal from 'sweetalert2'
-const API_URL = import.meta.env.VITE_API_URL;
+//const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = 'http://localhost:8000/api';
 
 
 console.log(API_URL);

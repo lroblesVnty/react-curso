@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { Alert, Typography } from '@mui/material';
 import { set } from 'react-hook-form';
 import { isThreeDaysBefore } from '../utils/dateUtils';
+import CircularProgress from '@mui/material/CircularProgress';
 
-const MiembroStatus = ({miembroId,nombre,isRegisterError}) => {
+const MiembroStatus = ({miembroId,nombre,isRegisterError,userExists=true,isLoading}) => {
    // const {id: miembroId}=useParams()
     const [isActive, setIsActive] = useState(false)
     const [expirationDate, setExpirationDate] = useState(null)
@@ -44,18 +45,35 @@ const MiembroStatus = ({miembroId,nombre,isRegisterError}) => {
     }
 
     return (
+        <>
+        {isLoading ? (
+            <div>
+                Cargando...
+                    <CircularProgress />
+            </div>
+        ) : (
+
+       
         <div>
             <div className="row mb-4">
                 {/* <div className="col fs-2 text-center text-success">Asistencia Registrada!</div> */}
-                {!isActive && isRegisterError?
-                        <Alert severity="error"  sx={{justifyContent: 'center',textAlign: 'center',alignItems: 'center',}}>
-                            El plan del miembro ha vencido. No se puede registrar asistencia.
+
+                {userExists ? (
+                    !isActive && isRegisterError ? (
+                        <Alert severity="error" sx={{ justifyContent: 'center', textAlign: 'center', alignItems: 'center' }}>
+                        El plan del miembro ha vencido. No se puede registrar asistencia.
                         </Alert>
-                    :
-                    <Alert severity="success"  sx={{justifyContent: 'center',textAlign: 'center',alignItems: 'center',}}>
+                    ) : (
+                        <Alert severity="success" sx={{ justifyContent: 'center', textAlign: 'center', alignItems: 'center' }}>
                         Asistencia Registrada!
+                        </Alert>
+                    )
+                    ) : (
+                    <Alert severity="error" sx={{ justifyContent: 'center', textAlign: 'center', alignItems: 'center' }}>
+                        El usuario no existe o no está registrado.
                     </Alert>
-                }
+                )}
+
                 
             </div>
             <div className="row mb-4">
@@ -85,6 +103,8 @@ const MiembroStatus = ({miembroId,nombre,isRegisterError}) => {
             )}
 
         </div>
+        )}
+        </>
     
     )
 }

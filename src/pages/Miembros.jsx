@@ -21,7 +21,7 @@ import MoreTimeIcon from '@mui/icons-material/MoreTime';
 
 
 
-const pages=['Consultar','Products','Blog']
+const pages=['Asistencia','Visitas','Blog']
 
 
 const Miembros = () => {

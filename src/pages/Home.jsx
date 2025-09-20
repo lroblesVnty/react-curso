@@ -6,7 +6,7 @@ import Images from '../assets/imagenes';
 
 const Home = () => {
  
-    const dataToEncode = JSON.stringify({ nombre: 'Billy Hirthe', id: 6 });
+    const dataToEncode = JSON.stringify({ nombre: 'User False', id: 200 });
     const displaySize = 200; // Tamaño del QR en pantalla (200x200 píxeles)
     const exportSize = 580;  // Tamaño deseado para la exportación 
     const qrRef = useRef(null); // Referencia al contenedor del QR
@@ -25,7 +25,7 @@ const Home = () => {
         const image = canvas.toDataURL('image/png'); // Puedes cambiar a 'image/jpeg'
         const link = document.createElement('a');
         link.href = image;
-        link.download = 'mi_codigo_qr_personalizado6.png'; // Nombre del archivo
+        link.download = 'userFalse-qr.png'; // Nombre del archivo
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

@@ -22,6 +22,7 @@ import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 const pages=['Miembros','Visitas','Blog']
 const Asistencia = () => {
     const [loading, setLoading] = useState(false);
+    const [isLoadingAdd, setIsLoadingAdd] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [rowCount, setRowCount] = useState(0);
     const [rows, setRows] = useState([]);
@@ -30,6 +31,7 @@ const Asistencia = () => {
     const [showNextComponent, setShowNextComponent] = useState(false);
     const [scannedData, setScannedData] = useState(null); // Estado para almacenar los datos escaneados
     const [isRegisterError, setIsRegisterError] = useState(false);
+    const [userExists, setUserExists] = useState(true);
 
 
 
@@ -52,7 +54,6 @@ const Asistencia = () => {
     };
 
     const handleScannSuccessfully =async (data) => {
-        //TODO borrar los buttonsActions del datagrid, y para cerrar la visita usar el mismo boton que para registrar, es decir si ya hay hora de registro que se registre la hora de salida
         setScannerActive(false); 
         console.log('Datos del miembro escaneado:', data);
         setScannedData(data); // Guarda los datos escaneados en el estado
@@ -65,6 +66,7 @@ const Asistencia = () => {
         }else{
             setShowNextComponent(true);
             registrarAsistencia(data);
+            
         }
         
         //handleCloseModal(); // Cierra el modal
@@ -89,7 +91,8 @@ const Asistencia = () => {
     };
 
     const registrarAsistencia = async (data) => {
-        setLoading(true)
+        //setLoading(true)
+        setIsLoadingAdd(true)
         const { fecha, hora } = getCurrentDateTime();
         const payload = {
             fecha,
@@ -118,9 +121,26 @@ const Asistencia = () => {
             }
         } catch (error) {
             console.log(error)
+            console.log(error.response.status)
             if (error.response.status==409 && error.response.data.error) {
                 setIsRegisterError(true);
-            }else{
+            }else if (error.response.status==422) {
+                console.log('error 422')
+                setUserExists(false);
+                //console.log(error.response.data.errors.miembro_id)
+               /*  handleCloseModal();
+                if (error.response.data.errors.miembro_id){
+                    Swal.fire({
+                        position: 'top',
+                        icon: 'warning',
+                        title: 'El miembro no está registrado o no existe',
+                        showConfirmButton: true,
+                        allowOutsideClick: false,
+                    });
+                } */
+                
+            }
+            else{
 
                 Swal.fire({
                     position: 'top',
@@ -132,7 +152,9 @@ const Asistencia = () => {
             }
         }
         finally{
-            setLoading(false)
+            setIsLoadingAdd(false)
+           
+            
         }    
     }
 
@@ -248,7 +270,7 @@ const Asistencia = () => {
                                                 />
                                             )}
                                             {showNextComponent && (
-                                                <MiembroStatus miembroId={scannedData.id} nombre={scannedData.nombre} isRegisterError={isRegisterError} />
+                                                <MiembroStatus miembroId={scannedData.id} nombre={scannedData.nombre} isRegisterError={isRegisterError} userExists={userExists} isLoading={isLoadingAdd} />
                                             )}
                                             <div className="row mt-4">
                                                 <div className="col d-flex justify-content-end align-items-end">
