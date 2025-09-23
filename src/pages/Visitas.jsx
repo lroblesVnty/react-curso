@@ -173,7 +173,7 @@ const Visitas = () => {
         }  
     }
     
-     const getVisitasActual=async ()=>{
+    const getVisitasActual=async ()=>{
         setLoading(true)
         try {
             //const currentDate= formatDateLocal(new Date())

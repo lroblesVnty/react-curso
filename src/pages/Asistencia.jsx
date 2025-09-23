@@ -9,9 +9,9 @@ import Swal from 'sweetalert2'
 import Button from '@mui/material/Button';
 import ModalComponent from "../components/Modal";
 import IconButton from '@mui/material/IconButton';
-import { Tooltip } from "@mui/material";
+import { Stack, Switch, Tooltip, Typography } from "@mui/material";
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
-import { getAsistenciaByMiembro, getAsistenciaList, registerAsistencia,closeAsistencia } from "../services/gym.service";
+import { getAsistenciaByMiembro, getAsistenciaList, registerAsistencia,closeAsistencia, getAsistenciasByDate } from "../services/gym.service";
 import DataTableComponent from "../components/DataTableComponent";
 import { asistenciaColumns } from "../config/columnsConfig";
 import ScannerComponent from "../components/ScannerComponent";
@@ -32,15 +32,96 @@ const Asistencia = () => {
     const [scannedData, setScannedData] = useState(null); // Estado para almacenar los datos escaneados
     const [isRegisterError, setIsRegisterError] = useState(false);
     const [userExists, setUserExists] = useState(true);
-
+    const [checked, setChecked] = useState(true);
+//TODO AGREGAR EL BOTON PARA EL HISTORIAL DE ASISTENCIAS Y LAS ASISTENCIAS DEL DIA ACTUAL
 
 
     useEffect(() => {
         (async()=>{
-            getAsistencia()
+            getAsistenciasActual()
         })();
        
     },[]);//arreglo vacio para que no itere varias veces
+
+    const getHistorialAsistencias=async ()=>{
+        setLoading(true)
+        try {
+            //const currentDate= formatDateLocal(new Date())
+            //const resp= await getVisitasByDate(currentDate)
+            const resp= await getAsistenciaList()
+            console.log(resp)
+            setLoading(false)
+            if (resp.status==200) {
+                if (resp.data) {
+                    setRows(resp.data)
+                    setRowCount(resp.data.length)
+                    //console.log(resp.data.length)
+                }
+            }
+        } catch (error) {
+            
+            Swal.fire({
+                position: 'top',
+                icon: 'error',
+                title:error.message,
+                showConfirmButton: true,
+                allowOutsideClick:false,
+            });
+            
+        }finally{
+            setLoading(false)
+        }  
+    }
+
+    const getAsistenciasActual=async ()=>{
+        setLoading(true)
+        try {
+            //const currentDate= formatDateLocal(new Date())
+            //const resp= await getVisitasByDate(currentDate)
+            const resp= await getAsistenciasByDate()
+            console.log(resp)
+            setLoading(false)
+            if (resp.status==200) {
+                if (resp.data) {
+                    setRows(resp.data)
+                    setRowCount(resp.data.length)
+                    //console.log(resp.data.length)
+                }
+            }
+        } catch (error) {
+            //console.log(error)
+            if (error.response && error.response.status != 404) {
+                Swal.fire({
+                    position: 'top',
+                    icon: 'error',
+                    title:error.message,
+                    showConfirmButton: true,
+                    allowOutsideClick:false,
+                });
+            }
+            if (error.response && error.response.status == 404) {
+                setRows([])
+                setRowCount(0)
+            }
+            
+            
+            
+        }finally{
+            setLoading(false)
+        }  
+    }
+
+
+    const handleChange = (event) => {
+        const nuevoEstado = event.target.checked;
+        setChecked(nuevoEstado);
+        if (nuevoEstado) {
+            getAsistenciasActual();
+        } else {
+            getHistorialAsistencias();
+        }
+
+    };
 
     const handleOpenModal = () => {
         setShowNextComponent(false);
@@ -73,6 +154,7 @@ const Asistencia = () => {
         // Opcional: Si quieres recargar la lista de miembros después de agregar uno
         //getVisitas(); // Llama a tu función para obtener los miembros actualizados
     };
+
 
     const checkAsistenciaExistsForToday = async (miembroId) => {
         console.log({miembroId})
@@ -245,12 +327,25 @@ const Asistencia = () => {
             <div className="container mt-4">
                 <div className="row justify-content-center align-items-center">
                     <div className="col">
-                        <CardForm title="Asistencia" colSize="10">
+                        <CardForm title="Asistencia" colSize="10" >
                             <div className="row mb-3 justify-content-end">
+                                <div className="col">
+                                     <Stack direction="row" spacing={1} alignItems="center">
+                                        <Typography>Historial</Typography>
+                                        <Switch inputProps={{ 'aria-label': 'ant design' }}  checked={checked}
+                                        onChange={handleChange} sx={{
+                                            '& .MuiSwitch-thumb': {
+                                            backgroundColor: checked ?  '#f44336':'#02b99b' , // azul activo, rojo inactivo
+                                            },
+                                            '& .MuiSwitch-track': {
+                                            backgroundColor: checked ? '#ffcdd2' : '#0ff69eff', // track azul claro o rosa claro
+                                            },
+                                        }}
+                                        />
+                                        <Typography>Fecha Actual</Typography>
+                                    </Stack>
+                                </div>
                                 <div className="col align-items-end text-end col-auto">
-                            { //TODO en modal ver si se puede colocar el scaner y conese registrar la visita o simular abiri el scaner
-
-                            }
                                     <Tooltip title="Registrar Asistencia">
                                         <IconButton aria-label="add"  onClick={handleOpenModal} color="secondary" size="large">
                                             <QrCodeScannerIcon fontSize="inherit" />

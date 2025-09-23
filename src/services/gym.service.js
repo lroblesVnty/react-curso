@@ -37,6 +37,12 @@ export const  getAsistenciaList=async ()=>{
     return response
 }
 
+export const  getAsistenciasByDate=async (date)=>{
+    const endpoint=date?`/asistencia/fecha?fecha=${date}`:'/asistencia/fecha'
+    const response= await apiProductos.get(endpoint) 
+    return response
+}
+
 export const  registerAsistencia=async (data)=>{
     const response= await apiProductos.post('/asistencia', data) 
     return response

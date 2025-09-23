@@ -43,12 +43,13 @@ const DataTableComponent = ({rows,loading,rowCount,cols}) => {
             "& .MuiDataGrid-toolbarContainer": {
                 //: '#074682',
                 "& .MuiButton-text": {
-                //color: 'rgb(13, 13, 14)',
-                color: "black",
+                    color: 'rgb(13, 13, 14)',
+                    //color: "black",
+                    //color:"white"
                 },
                 "& .MuiBadge-badge": {
                 //backgroundColor: '#074682',
-                backgroundColor: "white",
+                    backgroundColor: "white",
                 },
                 /*'& .MuiInput-input':{
                                         color:'rgb(81,81,81)'
@@ -56,11 +57,13 @@ const DataTableComponent = ({rows,loading,rowCount,cols}) => {
                 "& .MuiInputBase-root": {
                 //texto e icono
                     //color: "rgb(210, 224, 223)",
-                    color:"black"
+                    color:"black"//color del texto de busqueda
+                    //color:"white"
                 },
                 "& .MuiSvgIcon-root": {
                 //only icons
-                // color:'red'
+                    //color:'white' //color del icono de busqueda
+                    color:'black' //color del icono de busqueda
                 },
             },
             border: 2,
@@ -76,16 +79,19 @@ const DataTableComponent = ({rows,loading,rowCount,cols}) => {
             },
             ".MuiDataGrid-row": {
                 color: "black",
+                //color:'white'
                 //borderColor:'black'
             },
             ".MuiDataGrid-cell": {
                 borderBottomColor: "rgb(81,81,81)",
             },
             "& .MuiDataGrid-footerContainer": {
+                //color: "white",
                 color: "black",
                 "& .MuiPaginationItem-text": {
                     //color: "rgb(210, 224, 223)",
-                    color:'black'
+                    //color:'white'
+                    color:'black'//color del texto de la paginacion
                 },
             },
             "& .MuiDataGrid-cell--withRenderer": {
@@ -99,6 +105,13 @@ const DataTableComponent = ({rows,loading,rowCount,cols}) => {
             "& .MuiIconButton-root": {
                 color: "black",
             },
+            '& .MuiDataGrid-overlay': {
+                //backgroundColor: '#212020ff', // fondo personalizado de la tabla cuando no hay datos
+                //color: '#fefefeff',           // color del texto
+                //fontWeight: 'bold',
+                //fontSize: '1.2rem',
+            },
+
             /*'.MuiDataGrid-columnHeaders':{
                                     borderBottomColor:'red',
     
