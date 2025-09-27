@@ -71,7 +71,8 @@ export function AuthProvaider({ children }) {
             if (error.status==400 || error.status==401) {
                 return { success: false, error: error.response.data?.message || 'Credenciales inválidas' };
             }
-            return { success: false, error: error.response?.data || 'Error de conexión' };
+            //return { success: false, error: error.response?.data || 'Error de conexión' };
+            return { success: false, error: 'Error de conexión' };
         }
     }, []); // useCallback para memoizar la función
 

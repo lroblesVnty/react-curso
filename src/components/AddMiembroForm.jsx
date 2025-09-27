@@ -186,7 +186,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                     <div className="row">
                         <div className="col">
                             <div className="form-floating mb-3">
-                                <input type="text" className={"form-control "+(isSubmitted?errors.nombre?'is-invalid':'is-valid':'')} placeholder="name@example.com" 
+                                <input type="text" className={"form-control "+(isSubmitted?errors.nombre?'is-invalid':'is-valid':'')} placeholder="name@example.com" autocomplete="off"  
                                     {...register("nombre",{
                                         validate: value =>value.trim() !="" || "El nombre no puede estar vacio",
                                         required: { value: true, message: "Ingresa el nombre" },
@@ -205,7 +205,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                         </div>
                         <div className="col">
                             <div className="form-floating mb-3">
-                                <input type="text" className={"form-control "+(isSubmitted?errors.apellido?'is-invalid':'is-valid':'')} placeholder="name@example.com" 
+                                <input type="text" className={"form-control "+(isSubmitted?errors.apellido?'is-invalid':'is-valid':'')} placeholder="name@example.com" autocomplete="off"  
                                     {...register("apellido",{
                                         validate: value =>value.trim() !="" || "El apellido no puede estar vacio",
                                         required: { value: true, message: "Ingresa el apellido" },
@@ -226,7 +226,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                     <div className="row">
                         <div className="col">
                             <div className="form-floating mb-3">
-                                <input type="number"  className={"form-control "+(isSubmitted?errors.edad?'is-invalid':'is-valid':'')} placeholder="First Name" {...register("edad",{
+                                <input type="number"  className={"form-control "+(isSubmitted?errors.edad?'is-invalid':'is-valid':'')} placeholder="First Name" autocomplete="off" {...register("edad",{
                                 valueAsNumber: {value:true,message:"Solo se permiten números"},
                                 required: { value: true, message: "Ingresa tu edad" },
                                 max:{value:100,message:"Edad no válida"},
@@ -241,7 +241,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                         </div>
                         <div className="col">
                             <div className="form-floating mb-3">
-                                <input type="tel" className={"form-control "+(isSubmitted?errors.tel?'is-invalid':'is-valid':'')} placeholder="name@example.com" 
+                                <input type="tel" className={"form-control "+(isSubmitted?errors.tel?'is-invalid':'is-valid':'')} placeholder="name@example.com" autocomplete="off"
                                     {...register("tel",{
                                         validate: value =>value.trim() !="" || "El teléfono no puede estar vacio",
                                         required: { value: true, message: "Ingresa el teléfono" },

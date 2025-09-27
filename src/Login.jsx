@@ -6,6 +6,7 @@ import estilos from './styles/login.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLock, faSignInAlt, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2'
+import LoadingButton from '@mui/lab/LoadingButton';
 
 
 function Login() {
@@ -20,14 +21,16 @@ function Login() {
     });
     const [error, setError] = useState(null);
     const [espera, setEspera] = useState(false)
+    //const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate();
     const handleChange=({target:{name,value}})=>{
         setUser({...user,[name]:value})
     
     }
     const handleSubmit =async e =>{
-        e.preventDefault();
+        //setIsLoading(true)
         setEspera(true)
+        e.preventDefault();
         try {
             const resp=await login(user)
             console.log({resp})
@@ -49,7 +52,7 @@ function Login() {
                 Swal.fire({
                     position: 'top',
                     icon: 'warning',
-                    title:resp.error.msg,
+                    title:resp.error,
                     showConfirmButton: true,
                     allowOutsideClick:false,
                 });
@@ -58,6 +61,7 @@ function Login() {
             
         } catch (error) {
             console.error({error})
+            console.log('hubo un error')
             Swal.fire({
                 position: 'top',
                 icon: 'warning',
@@ -124,18 +128,41 @@ function Login() {
                                     </span>
                                     <input type="text" className={"form-control "+estilos.inputStyle} id={estilos.username} name="email"  placeholder="Usuario" onChange={handleChange}  autoCapitalize="off" maxLength="30"/>
                                 </div>
-                                <div className="input-group mt-5" >
+                                <div className="input-group mt-5 mb-5" >
                                     <span className={"input-group-text  border-left-0 "+estilos.spanEstilo}>
                                         <FontAwesomeIcon icon={faLock} size="2x" className={estilos.iconStyle}/>
                                     </span>
                                     <input type="password" className={"form-control "+estilos.inputStyle}  id={estilos.pass}  name="password"  placeholder="Password" onChange={handleChange} autoComplete="off" maxLength="100" required/>
                                 </div>
-                                <div className="col-lg-12 text-center mt-5 mb-5">
-                                    <button type='submit' disabled={espera}  className="btn  btn-lg" id={estilos.bt_entrar}>
-                                        <FontAwesomeIcon icon={faSignInAlt}  className={estilos.iconStyle}/>
-                                        &nbsp;Entrar
-                                    </button>
-            
+                               { /*<div className="col-lg-12 text-center mt-5 mb-5">*/}
+                                <div className="row mt-4 mb-4">
+                                    <div className="d-grid gap-2 col-12 mx-auto">
+                                        {/*<button type='submit' disabled={espera}  className="btn  btn-lg" id={estilos.bt_entrar}>
+                                            <FontAwesomeIcon icon={faSignInAlt}  className={estilos.iconStyle}/>
+                                            &nbsp;Entrar
+                                        </button>*/}
+                                        <LoadingButton
+                                            sx={{'color':'white','bgcolor':'rgb(2, 185, 155)',borderColor:'rgba(4, 206, 172, 0.25)',
+                                                ':hover': {
+                                                    // bgcolor: '#09A28A', // theme.palette.primary.main
+                                                    bgcolor:'rgba(5, 135, 113, 1)',
+                                                    color: 'white',
+                                                    borderColor:'rgba(4, 206, 172, 0.25)',
+                                                    boxShadow: '0 0 0 0.3rem rgba(4, 206, 172, 0.25)',
+                                                },'.MuiLoadingButton-loadingIndicator':{
+                                                    color:'white'
+                                                }
+                                            ,}}
+                                            type="submit"
+                                            loading={espera}
+                                            loadingPosition="center"
+                                            endIcon={<FontAwesomeIcon icon={faSignInAlt}  className={estilos.iconStyle}/>}
+                                            variant="outlined"
+                                            size='large'
+                                            >{'Entrar'}
+
+                                        </LoadingButton>
+                                    </div>
                                 </div>
                                 {
                                     error &&

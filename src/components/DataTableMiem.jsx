@@ -27,7 +27,7 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action,act
         { field: 'edad', headerName: 'Edad',flex: 1,maxWidth:80,headerClassName: 'theme-header',headerAlign: 'center',align:'center'},
         { field: 'tel', headerName: 'Teléfono',flex: 1,maxWidth:100,description:'Teléfono del miembro.',headerClassName: 'theme-header',headerAlign: 'center',align:'center'},
         { field: 'plan', headerName: 'Plan',flex: 1,description:'Plan del miembro.',headerClassName: 'theme-header',headerAlign: 'center',align:'center',valueGetter: (params) => params.row.plan.nombre_plan,},
-        { field: 'expirationDate', headerName: 'Fecha de Expiración',flex: 1,description:'Fecha de expiración del plan.',headerClassName: 'theme-header',headerAlign: 'center',align:'center',type: 'date'},
+        { field: 'expirationDate', headerName: 'Fecha de Expiración',flex: 1,description:'Fecha de expiración del plan.',headerClassName: 'theme-header',headerAlign: 'center',align:'center',type: 'date', resizable: true},
         { field: 'activo', headerName: 'Estatus',flex: 1,description:'Estatus del plan ',headerClassName: 'theme-header',
         headerAlign: 'center',align:'center',renderCell: RenderStatus},
        
@@ -154,7 +154,6 @@ const DataTableMiem = ({rows,loading,rowCount,setEditValues,setIsEdit,action,act
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             rowsPerPageOptions={[5, 10, 20]}
             getRowId={(row) => row.id}
-            disableColumnResize={false}
             disableColumnMenu
             disableColumnFilter
             disableColumnSelector
