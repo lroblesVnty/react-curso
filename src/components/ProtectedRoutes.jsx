@@ -11,8 +11,8 @@ export const ProtectedRoute = ({children }) => {
     //console.log({isAuthenticated})
     //console.log({allowedRoles})
 
-
-    useEffect(() => {
+ //console.log("childrennn:", children); 
+    /*useEffect(() => {
         if (!isAuthenticated && !loadingSession) {
             navigate('/login');
         }
@@ -20,7 +20,7 @@ export const ProtectedRoute = ({children }) => {
 
     if (loadingSession) {
         return <div>Cargando sesión...</div>; // O un componente de carga más sofisticado
-    }
+    }*/
 
     
     /*if (!Array.isArray(userRoles) || userRoles.length === 0) {
@@ -34,5 +34,18 @@ export const ProtectedRoute = ({children }) => {
         return <Navigate to="/unauthorized" replace />;
     }*/
 
-    return isAuthenticated ?  children: null;
+    
+    if (loadingSession) {
+        return <div>Cargando sesión...</div>;
+    }
+
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children
+
+
+
+   // return isAuthenticated ?  children: null;
 };

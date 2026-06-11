@@ -53,7 +53,7 @@ export function AuthProvaider({ children }) {
     const login = useCallback(async (credentials) => {
         try {
             const response = await iniciarSesion(credentials);
-        
+           
             if (response.status === 200 && response?.data) {
                 setToken(response.data.access_token);
                 localStorage.setItem('authToken', response.data.access_token);
@@ -65,10 +65,12 @@ export function AuthProvaider({ children }) {
                 console.log(response.data)
                 return { success: true }; // Indica que el inicio de sesión fue exitoso
             } else {
+                console.log('error al iniciar sesión')
                 return { success: false, error: response.data?.message || 'Credenciales inválidas' };
             }
         } catch (error) {
-            if (error.status==400 || error.status==401) {
+            console.log({error})
+            if (error.response.status==400 || error.response.status==401) {
                 return { success: false, error: error.response.data?.message || 'Credenciales inválidas' };
             }
             //return { success: false, error: error.response?.data || 'Error de conexión' };
@@ -111,7 +113,9 @@ export function AuthProvaider({ children }) {
 
     return (
         <AuthContext.Provider value={value}>
-            {!loadingSession ? children : <div>Cargando...</div>} {/* Mostrar un indicador de carga */}
+            {children}
+            {/*!loadingSession ? children : <div>Cargando...</div>*/} 
+            {/* Mostrar un indicador de carga */}
         </AuthContext.Provider>
     );
        

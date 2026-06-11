@@ -6,6 +6,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { addMember, getMembers, updateMember } from "../services/miembors.service";
+import { miembrosService } from "../services/miembros";
 import Swal from 'sweetalert2'
 import { getResponseError } from "../models/errorUtils";
 import FieldError from "../components/FieldError";
@@ -110,7 +111,8 @@ const Miembros = () => {
     const getMiembros=async ()=>{
         setLoading(true)
         try {
-            const resp= await getMembers()
+            //const resp= await getMembers()
+            const resp = await miembrosService.getAll();
             console.log(resp)
             setLoading(false)
             if (resp.status==200) {

@@ -13,7 +13,13 @@ function Login() {
     //console.log('[ENV] API_URL:', import.meta.env.VITE_API_URL);
     const location=useLocation()
     //const { userActive,login,setUserActive} = useAuth();
-    const {login} = useContext(AuthContext);
+    const context = useContext(AuthContext);
+    //const {login} = useContext(AuthContext);
+    if (!context) {
+        console.log('no hay contexto')
+    return null; // o loader
+    }
+    const { login } = context;
    
     const [user,setUser]=useState({
         email:"",

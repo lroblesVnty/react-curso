@@ -9,7 +9,7 @@ import { AuthProvaider } from './context/authContext'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   
-    <React.StrictMode>
+    // <React.StrictMode>
         <BrowserRouter>
          <ThemeProvider theme={theme}>
             <AuthProvaider>
@@ -19,6 +19,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             </AuthProvaider>
          </ThemeProvider> 
         </BrowserRouter>           
-    </React.StrictMode>
+    // </React.StrictMode>
   
 )
