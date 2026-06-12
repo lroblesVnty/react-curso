@@ -115,13 +115,16 @@ const Miembros = () => {
             const resp = await miembrosService.getAll();
             console.log(resp)
             setLoading(false)
-            if (resp.status==200) {
+            setRows(resp)
+            setRowCount(resp.length)
+            //*ya no se necesita esta validacion porque el servicio ya maneja el error
+            /*if (resp.status==200) {
                 if (resp.data) {
                     setRows(resp.data)
                     setRowCount(resp.data.length)
                     //console.log(resp.data.length)
                 }
-            }
+            }*/
         } catch (error) {
             
             Swal.fire({

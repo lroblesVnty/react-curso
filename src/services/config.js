@@ -21,7 +21,7 @@ export const privateApi = axios.create({
 // A la instancia privada sí le aplicamos el interceptor del token
 privateApi.interceptors.request.use(
 	(config) => {
-	const token = localStorage.getItem('token');
+	const token = localStorage.getItem('authToken');
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`;
 	}
@@ -35,7 +35,7 @@ privateApi.interceptors.response.use(
 	(response) => response,
 	(error) => {
 	if (error.response && error.response.status === 401) {
-		localStorage.removeItem('token');
+		localStorage.removeItem('authToken');
 		window.location.href = '/login';
 	}
 	return Promise.reject(error);

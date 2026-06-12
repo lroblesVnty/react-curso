@@ -98,6 +98,13 @@ export function AuthProvaider({ children }) {
             }
         } catch (error) {
             return { success: false, error: error.response?.data?.message || 'Error de conexión' };
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('token_expires_at');
+            sessionStorage.removeItem('user');
+            console.log('se borro logout');
+            setIsAuthenticated(false);
+            setUser(null);
+            setExpiresAt(null); 
         }
        
     }, []);

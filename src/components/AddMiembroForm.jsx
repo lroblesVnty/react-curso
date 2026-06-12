@@ -11,6 +11,7 @@ import { addMember, updateMember } from "../services/miembors.service";
 import Swal from 'sweetalert2'
 import { getResponseError } from "../models/errorUtils";
 import { use } from "react";
+import { miembrosService } from "../services/miembros";
 
 const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
     const [defaultValues, setDefaultValues] = useState({nombre:'',apellido:'',edad:'',tel:'',plan:''});
@@ -90,9 +91,10 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                 console.log('editando')
                 console.log(data)
                 try {
-                    const resp=await updateMember(data)
+                    //const resp=await updateMember(data)
+                    const resp=await miembrosService.update(userData.id, data)
                     console.log(resp)
-                    if (resp.status==200) {
+                    //if (resp.status==200) {//*ya no se necesita esta validacion porque el servicio ya maneja el error
                         if (onUserAdded) {
                             onUserAdded();
                         }
@@ -107,7 +109,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                         //setIsSucces(true)
                         setDefaultValues({nombre:'',apellido:'',edad:'',tel:'',plan:''})
                         setIsEdit(false)
-                    }
+                    //}
 
                 } catch (error) {
                     Swal.fire({
@@ -127,14 +129,13 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
             }
         }else{
             try {
-                const resp= await addMember(data)
+                //const resp= await addMember(data)
+                const resp=await miembrosService.create(data)
                 console.log(resp)
-                if (resp.status==201) {
+                //if (resp.status==201) {//*ya no se necesita esta validacion porque el servicio ya maneja el error
                     if (onUserAdded) {
                             onUserAdded();
                     }
-                    
-                    // *** AQUI ES DONDE AGREGAS EL MENSAJE DE ÉXITO ***
                     Swal.fire({
                         icon: 'success',
                         title: '¡Usuario agregado!',
@@ -147,7 +148,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                     setDefaultValues({nombre:'',apellido:'',edad:'',tel:''})
                     setIsEdit(false)
                     reset()
-                }
+               // }
             } catch (error) {
                 Swal.fire({
                     position: 'top',
@@ -186,7 +187,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                     <div className="row">
                         <div className="col">
                             <div className="form-floating mb-3">
-                                <input type="text" className={"form-control "+(isSubmitted?errors.nombre?'is-invalid':'is-valid':'')} placeholder="name@example.com" autocomplete="off"  
+                                <input type="text" className={"form-control "+(isSubmitted?errors.nombre?'is-invalid':'is-valid':'')} placeholder="name@example.com" autoComplete="off"  
                                     {...register("nombre",{
                                         validate: value =>value.trim() !="" || "El nombre no puede estar vacio",
                                         required: { value: true, message: "Ingresa el nombre" },
@@ -205,7 +206,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                         </div>
                         <div className="col">
                             <div className="form-floating mb-3">
-                                <input type="text" className={"form-control "+(isSubmitted?errors.apellido?'is-invalid':'is-valid':'')} placeholder="name@example.com" autocomplete="off"  
+                                <input type="text" className={"form-control "+(isSubmitted?errors.apellido?'is-invalid':'is-valid':'')} placeholder="name@example.com" autoComplete="off"  
                                     {...register("apellido",{
                                         validate: value =>value.trim() !="" || "El apellido no puede estar vacio",
                                         required: { value: true, message: "Ingresa el apellido" },
@@ -226,7 +227,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                     <div className="row">
                         <div className="col">
                             <div className="form-floating mb-3">
-                                <input type="number"  className={"form-control "+(isSubmitted?errors.edad?'is-invalid':'is-valid':'')} placeholder="First Name" autocomplete="off" {...register("edad",{
+                                <input type="number"  className={"form-control "+(isSubmitted?errors.edad?'is-invalid':'is-valid':'')} placeholder="First Name" autoComplete="off" {...register("edad",{
                                 valueAsNumber: {value:true,message:"Solo se permiten números"},
                                 required: { value: true, message: "Ingresa tu edad" },
                                 max:{value:100,message:"Edad no válida"},
@@ -241,7 +242,7 @@ const AddMiembroForm = ({onUserAdded,isEditing=false,userData=null}) => {
                         </div>
                         <div className="col">
                             <div className="form-floating mb-3">
-                                <input type="tel" className={"form-control "+(isSubmitted?errors.tel?'is-invalid':'is-valid':'')} placeholder="name@example.com" autocomplete="off"
+                                <input type="tel" className={"form-control "+(isSubmitted?errors.tel?'is-invalid':'is-valid':'')} placeholder="name@example.com" autoComplete="off"
                                     {...register("tel",{
                                         validate: value =>value.trim() !="" || "El teléfono no puede estar vacio",
                                         required: { value: true, message: "Ingresa el teléfono" },
